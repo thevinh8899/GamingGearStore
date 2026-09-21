@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets">
+
+    <ui:composition template="/templates/admin-template.xhtml">
+        <ui:define name="title">Tổng Quan Quản Trị - Gaming Gear Store</ui:define>
+
+        <ui:define name="content">
+            <div class="admin-header">
+                <div>
+                    <h1 class="page-title">TỔNG QUAN QUẢN TRỊ HỆ THỐNG</h1>
+                    <p style="color: var(--text-muted); font-size: 0.92rem; margin-top: 4px;">
+                        Chào mừng quản trị viên đến với trang quản lý Gaming Gear Store
+                    </p>
+                </div>
+            </div>
+
+            <!-- Quick Navigation Cards (3 Quy Trình Quản Lý) -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-bottom: 40px;">
+                <!-- Card 1: Sản phẩm -->
+                <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 28px; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <div style="width: 50px; height: 50px; border-radius: 12px; background: rgba(0, 240, 255, 0.12); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 16px;">
+                            <i class="fa-solid fa-box-archive"></i>
+                        </div>
+                        <h3 style="font-family: 'Rajdhani', sans-serif; font-size: 1.4rem; font-weight: 700; margin-bottom: 8px;">1. Quản Lý Sản Phẩm</h3>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; margin-bottom: 20px;">
+                            Quy trình CRUD + Tìm kiếm: Thêm mới phụ kiện, chỉnh sửa giá bán, cập nhật kho hàng và xóa sản phẩm.
+                        </p>
+                    </div>
+                    <h:link outcome="/admin/products.xhtml" styleClass="btn btn-primary" style="width: 100%;">
+                        Vào Quản Lý Sản Phẩm <i class="fa-solid fa-arrow-right" style="margin-left: 6px;"></i>
+                    </h:link>
+                </div>
+
+                <!-- Card 2: Danh mục -->
+                <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 28px; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <div style="width: 50px; height: 50px; border-radius: 12px; background: rgba(157, 78, 221, 0.15); color: var(--secondary); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 16px;">
+                            <i class="fa-solid fa-layer-group"></i>
+                        </div>
+                        <h3 style="font-family: 'Rajdhani', sans-serif; font-size: 1.4rem; font-weight: 700; margin-bottom: 8px;">2. Quản Lý Danh Mục</h3>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; margin-bottom: 20px;">
+                            Quy trình CRUD + Tìm kiếm: Phân loại bàn phím cơ, chuột, tai nghe, lót chuột, tay cầm game thủ.
+                        </p>
+                    </div>
+                    <h:link outcome="/admin/categories.xhtml" styleClass="btn btn-secondary" style="width: 100%;">
+                        Vào Quản Lý Danh Mục <i class="fa-solid fa-arrow-right" style="margin-left: 6px;"></i>
+                    </h:link>
+                </div>
+
+                <!-- Card 3: Đơn hàng & Duyệt đơn -->
+                <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 28px; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <div style="width: 50px; height: 50px; border-radius: 12px; background: rgba(16, 185, 129, 0.15); color: var(--success); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 16px;">
+                            <i class="fa-solid fa-receipt"></i>
+                        </div>
+                        <h3 style="font-family: 'Rajdhani', sans-serif; font-size: 1.4rem; font-weight: 700; margin-bottom: 8px;">3. Quản Lý &amp; Xác Nhận Đơn</h3>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; margin-bottom: 20px;">
+                            Quy trình xem chi tiết đơn hàng, tìm kiếm và nút bấm xác nhận đơn hàng của khách hàng theo yêu cầu đề bài.
+                        </p>
+                    </div>
+                    <h:link outcome="/admin/orders.xhtml" styleClass="btn btn-outline" style="width: 100%; border-color: var(--success); color: var(--success);">
+                        Vào Quản Lý Đơn Hàng <i class="fa-solid fa-arrow-right" style="margin-left: 6px;"></i>
+                    </h:link>
+                </div>
+            </div>
+        </ui:define>
+    </ui:composition>
+</html>

@@ -1,0 +1,99 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets">
+
+    <ui:composition template="/templates/template.xhtml">
+        <ui:define name="title">Góp Ý &amp; Đóng Góp Ý Kiến - Gaming Gear Store</ui:define>
+
+        <ui:define name="content">
+            <div class="page-header">
+                <div>
+                    <h2 class="page-title">Góp Ý &amp; Phản Hồi Dịch Vụ</h2>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 4px;">
+                        Ý kiến của bạn là động lực giúp Gaming Gear Store không ngừng hoàn thiện
+                    </p>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 30px;">
+                <!-- Form Góp ý -->
+                <div class="form-card" style="max-width: 100%; margin: 0;">
+                    <h3 style="font-family: 'Rajdhani', sans-serif; font-size: 1.4rem; font-weight: 700; margin-bottom: 20px;">
+                        <i class="fa-regular fa-paper-plane" style="color: var(--primary);"></i> Gửi Ý Kiến Của Bạn
+                    </h3>
+
+                    <h:form id="customerFeedbackForm">
+                        <div class="form-group">
+                            <label class="form-label">Họ và tên (*)</label>
+                            <h:inputText id="fbName" styleClass="form-control" required="true" 
+                                         requiredMessage="Vui lòng nhập họ và tên của bạn!" 
+                                         placeholder="Nguyễn Văn A" />
+                            <h:message for="fbName" styleClass="error-message" />
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Email hoặc Số điện thoại (*)</label>
+                            <h:inputText id="fbContact" styleClass="form-control" required="true"
+                                         requiredMessage="Vui lòng nhập thông tin liên hệ!"
+                                         placeholder="email@example.com hoặc 0901234567" />
+                            <h:message for="fbContact" styleClass="error-message" />
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Chủ đề góp ý</label>
+                            <h:selectOneMenu styleClass="form-control">
+                                <f:selectItem itemValue="product" itemLabel="Chất lượng sản phẩm Gaming" />
+                                <f:selectItem itemValue="service" itemLabel="Thái độ phục vụ &amp; Tư vấn" />
+                                <f:selectItem itemValue="shipping" itemLabel="Tốc độ giao hàng &amp; Đóng gói" />
+                                <f:selectItem itemValue="warranty" itemLabel="Chính sách bảo hành đổi mới" />
+                                <f:selectItem itemValue="other" itemLabel="Ý kiến đóng góp khác" />
+                            </h:selectOneMenu>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Nội dung góp ý chi tiết (*)</label>
+                            <h:inputTextarea id="fbMessage" rows="5" styleClass="form-control" required="true"
+                                             requiredMessage="Vui lòng nhập nội dung góp ý!"
+                                             placeholder="Chia sẻ chi tiết trải nghiệm hoặc mong muốn của bạn..." />
+                            <h:message for="fbMessage" styleClass="error-message" />
+                        </div>
+
+                        <h:commandButton value="Gửi Góp Ý Cho Chúng Tôi" styleClass="btn btn-primary" style="width: 100%;" />
+                    </h:form>
+                </div>
+
+                <!-- Thông tin hỗ trợ -->
+                <div style="display: flex; flex-direction: column; gap: 20px;">
+                    <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 28px;">
+                        <h4 style="font-family: 'Rajdhani', sans-serif; font-size: 1.25rem; font-weight: 700; color: var(--primary); margin-bottom: 14px;">
+                            <i class="fa-solid fa-headset"></i> Trung Tâm CSKH 24/7
+                        </h4>
+                        <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.6; margin-bottom: 16px;">
+                            Đội ngũ tư vấn viên am hiểu sâu về bàn phím cơ, switch quang, cảm biến chuột luôn sẵn sàng hỗ trợ bạn build góc setup mơ ước.
+                        </p>
+                        <div style="display: flex; flex-direction: column; gap: 10px; font-size: 0.92rem;">
+                            <div><i class="fa-solid fa-phone" style="color: var(--secondary); width: 22px;"></i> Hotline: <strong>1900 8888</strong> (8:00 - 22:00)</div>
+                            <div><i class="fa-solid fa-envelope" style="color: var(--secondary); width: 22px;"></i> Email: support@gearstore.vn</div>
+                            <div><i class="fa-solid fa-location-dot" style="color: var(--secondary); width: 22px;"></i> Showroom: TP. Hồ Chí Minh &amp; Hà Nội</div>
+                        </div>
+                    </div>
+
+                    <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 28px;">
+                        <h4 style="font-family: 'Rajdhani', sans-serif; font-size: 1.25rem; font-weight: 700; color: var(--success); margin-bottom: 14px;">
+                            <i class="fa-solid fa-shield-halved"></i> Cam Kết Chất Lượng
+                        </h4>
+                        <ul style="list-style: none; display: flex; flex-direction: column; gap: 8px; font-size: 0.9rem; color: var(--text-muted);">
+                            <li><i class="fa-solid fa-check" style="color: var(--success); margin-right: 8px;"></i> 100% sản phẩm có tem bảo hành chính hãng</li>
+                            <li><i class="fa-solid fa-check" style="color: var(--success); margin-right: 8px;"></i> Hoàn tiền 200% nếu phát hiện hàng giả, hàng nhái</li>
+                            <li><i class="fa-solid fa-check" style="color: var(--success); margin-right: 8px;"></i> Đổi mới 1-1 trong 30 ngày đầu sử dụng</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </ui:define>
+    </ui:composition>
+</html>

@@ -1,0 +1,140 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title><ui:insert name="title">Quản Trị Hệ Thống - Gaming Gear Store</ui:insert></title>
+        
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+        <!-- Custom Gaming CSS -->
+        <link rel="stylesheet" href="#{request.contextPath}/resources/css/gaming.css" />
+        
+        <style>
+            .admin-layout {
+                display: grid;
+                grid-template-columns: 260px 1fr;
+                min-height: 100vh;
+            }
+            .admin-sidebar {
+                background: #0f131c;
+                border-right: 1px solid var(--border-color);
+                display: flex;
+                flex-direction: column;
+                position: sticky;
+                top: 0;
+                height: 100vh;
+                padding: 24px 0;
+            }
+            .admin-brand {
+                padding: 0 24px 20px 24px;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                font-family: 'Rajdhani', sans-serif;
+                font-size: 1.5rem;
+                font-weight: 700;
+                color: #fff;
+            }
+            .admin-menu {
+                list-style: none;
+                padding: 20px 12px;
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+                flex: 1;
+            }
+            .admin-menu li a {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 12px 16px;
+                border-radius: var(--radius-md);
+                color: var(--text-muted);
+                font-size: 0.95rem;
+                font-weight: 500;
+                transition: var(--transition);
+            }
+            .admin-menu li a:hover,
+            .admin-menu li a.active {
+                background: rgba(0, 240, 255, 0.1);
+                color: var(--primary);
+                border-left: 3px solid var(--primary);
+            }
+            .admin-main {
+                padding: 32px 40px;
+                background: var(--bg-main);
+                overflow-y: auto;
+            }
+            .admin-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 28px;
+                padding-bottom: 16px;
+                border-bottom: 1px solid var(--border-color);
+            }
+        </style>
+    </h:head>
+
+    <h:body>
+        <div class="admin-layout">
+            <!-- Sidebar -->
+            <aside class="admin-sidebar">
+                <div class="admin-brand">
+                    <i class="fa-solid fa-shield-halved" style="color: var(--secondary);"></i>
+                    <span>ADMIN<span style="color: var(--primary);">PANEL</span></span>
+                </div>
+
+                <ul class="admin-menu">
+                    <li>
+                        <h:link outcome="/admin/products.xhtml">
+                            <i class="fa-solid fa-box-archive" style="width: 20px;"></i> Quản Lý Sản Phẩm
+                        </h:link>
+                    </li>
+                    <li>
+                        <h:link outcome="/admin/categories.xhtml">
+                            <i class="fa-solid fa-layer-group" style="width: 20px;"></i> Quản Lý Danh Mục
+                        </h:link>
+                    </li>
+                    <li>
+                        <h:link outcome="/admin/orders.xhtml">
+                            <i class="fa-solid fa-receipt" style="width: 20px;"></i> Quản Lý Đơn Hàng
+                        </h:link>
+                    </li>
+                    <li style="margin-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 12px;">
+                        <h:link outcome="/index.xhtml">
+                            <i class="fa-solid fa-arrow-up-right-from-square" style="width: 20px;"></i> Xem Trang Khách
+                        </h:link>
+                    </li>
+                </ul>
+
+                <div style="padding: 16px 24px; border-top: 1px solid rgba(255, 255, 255, 0.06); display: flex; align-items: center; justify-content: space-between;">
+                    <div style="font-size: 0.88rem; color: var(--text-muted);">
+                        <i class="fa-solid fa-user-gear" style="color: var(--primary); margin-right: 6px;"></i>
+                        <span>#{not empty sessionScope.loggedUser ? sessionScope.loggedUser.fullName : 'Admin'}</span>
+                    </div>
+                    <h:form>
+                        <h:commandLink action="#{authMB.logout()}" title="Đăng xuất" style="color: var(--danger); font-size: 1.1rem;">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                        </h:commandLink>
+                    </h:form>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="admin-main">
+                <ui:insert name="content">
+                    <!-- Nội dung quản trị -->
+                </ui:insert>
+            </main>
+        </div>
+    </h:body>
+</html>

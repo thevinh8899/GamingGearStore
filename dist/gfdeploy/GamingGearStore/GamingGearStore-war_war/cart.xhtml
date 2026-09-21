@@ -1,0 +1,138 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets">
+
+    <ui:composition template="/templates/template.xhtml">
+        <ui:define name="title">Giỏ Hàng Của Bạn - Gaming Gear Store</ui:define>
+
+        <ui:define name="content">
+            <div class="page-header">
+                <div>
+                    <h2 class="page-title">Giỏ Hàng Của Bạn</h2>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 4px;">
+                        Kiểm tra lại các phụ kiện gaming trước khi tiến hành thanh toán
+                    </p>
+                </div>
+                <h:link outcome="/products.xhtml" styleClass="btn btn-sm btn-outline">
+                    <i class="fa-solid fa-arrow-left"></i> Tiếp Tục Mua Sắm
+                </h:link>
+            </div>
+
+            <!-- Trường hợp Giỏ hàng trống -->
+            <ui:fragment rendered="#{empty cartMB.items}">
+                <div style="text-align: center; padding: 80px 20px; background: var(--bg-card); border-radius: var(--radius-lg); border: 1px solid var(--border-color);">
+                    <i class="fa-solid fa-cart-shopping" style="font-size: 4rem; color: var(--text-dim); margin-bottom: 20px;"></i>
+                    <h3 style="font-size: 1.4rem; color: var(--text-muted); margin-bottom: 10px;">Giỏ hàng của bạn đang trống!</h3>
+                    <p style="color: var(--text-dim); font-size: 0.95rem; margin-bottom: 24px;">Hãy khám phá các trang bị gaming tuyệt đỉnh để nâng tầm trải nghiệm của bạn.</p>
+                    <h:link outcome="/products.xhtml" styleClass="btn btn-primary" style="padding: 12px 28px;">
+                        Khám Phá Sản Phẩm Ngay
+                    </h:link>
+                </div>
+            </ui:fragment>
+
+            <!-- Bảng danh sách giỏ hàng -->
+            <ui:fragment rendered="#{not empty cartMB.items}">
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px; align-items: start;">
+                    <!-- Cột danh sách món -->
+                    <div class="table-responsive">
+                        <table class="gear-table">
+                            <thead>
+                                <tr>
+                                    <th>Sản Phẩm</th>
+                                    <th>Đơn Giá</th>
+                                    <th style="text-align: center;">Số Lượng</th>
+                                    <th>Thành Tiền</th>
+                                    <th style="text-align: center;">Thao Tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <ui:repeat value="#{cartMB.items}" var="item">
+                                    <tr>
+                                        <td>
+                                            <div style="display: flex; align-items: center; gap: 14px;">
+                                                <img src="#{productMB.getImageUrl(item.product.image)}" alt="#{item.product.productName}" 
+                                                     style="width: 60px; height: 60px; object-fit: cover; border-radius: var(--radius-sm); border: 1px solid var(--border-color);" />
+                                                <div>
+                                                    <div style="font-weight: 600; font-size: 0.95rem;">#{item.product.productName}</div>
+                                                    <div style="font-size: 0.78rem; color: var(--secondary);">Hãng: #{item.product.brand}</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <h:outputText value="#{item.product.price}">
+                                                <f:convertNumber pattern="#,### ₫" />
+                                            </h:outputText>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <h:form style="display: inline-flex; align-items: center; gap: 8px;">
+                                                <h:commandButton value="-" action="#{cartMB.updateQuantity(item.product.productID, item.quantity - 1)}" 
+                                                                 styleClass="btn btn-sm btn-outline" style="padding: 2px 8px;" />
+                                                <span style="font-weight: 700; min-width: 24px; text-align: center;">#{item.quantity}</span>
+                                                <h:commandButton value="+" action="#{cartMB.updateQuantity(item.product.productID, item.quantity + 1)}" 
+                                                                 styleClass="btn btn-sm btn-outline" style="padding: 2px 8px;" />
+                                            </h:form>
+                                        </td>
+                                        <td style="color: var(--primary); font-weight: 700; font-family: 'Rajdhani', sans-serif; font-size: 1.15rem;">
+                                            <h:outputText value="#{item.subTotal}">
+                                                <f:convertNumber pattern="#,### ₫" />
+                                            </h:outputText>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <h:form>
+                                                <h:commandLink action="#{cartMB.removeItem(item.product.productID)}" style="color: var(--danger); font-size: 1.1rem;">
+                                                    <i class="fa-regular fa-trash-can"></i>
+                                                </h:commandLink>
+                                            </h:form>
+                                        </td>
+                                    </tr>
+                                </ui:repeat>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Cột Tóm tắt thanh toán -->
+                    <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 24px;">
+                        <h3 style="font-family: 'Rajdhani', sans-serif; font-size: 1.35rem; font-weight: 700; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 12px;">
+                            Tóm Tắt Đơn Hàng
+                        </h3>
+
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 0.92rem; color: var(--text-muted);">
+                            <span>Tổng số lượng:</span>
+                            <span style="font-weight: 600; color: var(--text-main);">#{cartMB.totalQuantity} món</span>
+                        </div>
+
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 0.92rem; color: var(--text-muted);">
+                            <span>Phí vận chuyển:</span>
+                            <span style="color: var(--success); font-weight: 600;">Miễn phí (Toàn quốc)</span>
+                        </div>
+
+                        <div style="border-top: 1px dashed var(--border-color); margin: 16px 0; padding-top: 16px; display: flex; justify-content: space-between; align-items: baseline;">
+                            <span style="font-size: 1.05rem; font-weight: 700;">Tổng thanh toán:</span>
+                            <span style="font-family: 'Rajdhani', sans-serif; font-size: 1.8rem; font-weight: 700; color: var(--primary);">
+                                <h:outputText value="#{cartMB.totalAmount}">
+                                    <f:convertNumber pattern="#,### ₫" />
+                                </h:outputText>
+                            </span>
+                        </div>
+
+                        <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 24px;">
+                            <h:form>
+                                <h:commandButton value="Tiến Hành Đặt Hàng" action="#{cartMB.proceedToCheckout()}" styleClass="btn btn-primary" style="width: 100%; padding: 14px; font-size: 1rem;" />
+                            </h:form>
+
+                            <h:form>
+                                <h:commandLink action="#{cartMB.clearCart()}" styleClass="btn btn-sm btn-outline" style="width: 100%; color: var(--danger); border-color: rgba(239,68,68,0.3);">
+                                    <i class="fa-regular fa-trash-can"></i> Xóa toàn bộ giỏ hàng
+                                </h:commandLink>
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
+            </ui:fragment>
+        </ui:define>
+    </ui:composition>
+</html>

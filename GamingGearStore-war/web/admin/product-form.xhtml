@@ -1,0 +1,132 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets">
+
+    <ui:composition template="/templates/admin-template.xhtml">
+        <ui:define name="title">#{adminMB.editingProduct.productID == null ? 'Thêm Mới' : 'Cập Nhật'} Sản Phẩm - Gaming Gear Store</ui:define>
+
+        <ui:define name="content">
+            <div class="admin-header">
+                <div>
+                    <h1 class="page-title">#{adminMB.editingProduct.productID == null ? 'THÊM SẢN PHẨM MỚI' : 'CẬP NHẬT SẢN PHẨM'}</h1>
+                    <p style="color: var(--text-muted); font-size: 0.92rem; margin-top: 4px;">
+                        Điền đầy đủ các thông tin và kiểm tra ràng buộc dữ liệu hợp lệ
+                    </p>
+                </div>
+                <h:link outcome="/admin/products.xhtml" styleClass="btn btn-outline">
+                    <i class="fa-solid fa-arrow-left"></i> Quay Lại Danh Sách
+                </h:link>
+            </div>
+
+            <div class="form-card" style="max-width: 800px; margin: 0;">
+                <h:form id="productEditForm" enctype="multipart/form-data">
+                    <h:inputHidden value="#{adminMB.editingProduct.productID}" />
+
+                    <div class="form-group">
+                        <label class="form-label">Tên sản phẩm (*)</label>
+                        <h:inputText id="pName" value="#{adminMB.editingProduct.productName}" styleClass="form-control" required="true"
+                                     requiredMessage="Tên sản phẩm không được để trống!">
+                            <f:validateLength minimum="3" maximum="150" />
+                        </h:inputText>
+                        <h:message for="pName" styleClass="error-message" />
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div class="form-group">
+                            <label class="form-label">Danh mục phụ kiện (*)</label>
+                            <h:selectOneMenu id="pCat" value="#{adminMB.selectedCatIdForProduct}" styleClass="form-control" required="true"
+                                             requiredMessage="Vui lòng chọn danh mục!">
+                                <f:selectItem itemValue="" itemLabel="-- Chọn danh mục --" />
+                                <f:selectItems value="#{productMB.allCategories}" var="c" itemValue="#{c.categoryID}" itemLabel="#{c.categoryName}" />
+                            </h:selectOneMenu>
+                            <h:message for="pCat" styleClass="error-message" />
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Hãng sản xuất (*)</label>
+                            <h:inputText id="pBrand" value="#{adminMB.editingProduct.brand}" styleClass="form-control" required="true"
+                                         requiredMessage="Hãng sản xuất không được để trống!" placeholder="Razer, Logitech, Corsair..." />
+                            <h:message for="pBrand" styleClass="error-message" />
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div class="form-group">
+                            <label class="form-label">Đơn giá bán (VNĐ) (*)</label>
+                            <h:inputText id="pPrice" value="#{adminMB.editingProduct.price}" styleClass="form-control" required="true"
+                                         requiredMessage="Đơn giá không được để trống!">
+                                <f:validateDoubleRange minimum="1000" />
+                            </h:inputText>
+                            <h:message for="pPrice" styleClass="error-message" />
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Số lượng tồn kho (*)</label>
+                            <h:inputText id="pQty" value="#{adminMB.editingProduct.quantity}" styleClass="form-control" required="true"
+                                         requiredMessage="Số lượng tồn kho không được để trống!">
+                                <f:validateLongRange minimum="0" />
+                            </h:inputText>
+                            <h:message for="pQty" styleClass="error-message" />
+                        </div>
+                    </div>
+
+                    <!-- Khu vực Hình ảnh: Upload từ máy HOẶC Dán link -->
+                    <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 20px; margin-bottom: 20px;">
+                        <label class="form-label" style="font-size: 1rem; color: var(--primary); margin-bottom: 12px;">
+                            <i class="fa-solid fa-image"></i> Hình Ảnh Sản Phẩm
+                        </label>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start;">
+                            <!-- Cách 1: Tải ảnh từ máy tính -->
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <span style="font-size: 0.88rem; font-weight: 600; display: block; margin-bottom: 6px;">
+                                    Cách 1: Tải ảnh từ máy tính của bạn
+                                </span>
+                                <h:inputFile value="#{adminMB.uploadedImageFile}" styleClass="form-control" />
+                                <small style="color: var(--text-dim); font-size: 0.8rem; display: block; margin-top: 4px;">
+                                    Ảnh sẽ được lưu tự động vào thư mục <code>resources/images/</code>
+                                </small>
+                            </div>
+
+                            <!-- Cách 2: Nhập link URL hoặc tên file -->
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <span style="font-size: 0.88rem; font-weight: 600; display: block; margin-bottom: 6px;">
+                                    Cách 2: Hoặc nhập Link Online / Tên file
+                                </span>
+                                <h:inputText id="pImage" value="#{adminMB.editingProduct.image}" styleClass="form-control" 
+                                             placeholder="chuot-gpro.jpg hoặc https://images.unsplash.com/..." />
+                            </div>
+                        </div>
+
+                        <!-- Ảnh hiện tại xem trước (Preview) -->
+                        <ui:fragment rendered="#{not empty adminMB.editingProduct.image}">
+                            <div style="margin-top: 16px; display: flex; align-items: center; gap: 14px; padding-top: 14px; border-top: 1px dashed var(--border-color);">
+                                <span style="font-size: 0.85rem; color: var(--text-muted);">Ảnh hiện tại:</span>
+                                <img src="#{productMB.getImageUrl(adminMB.editingProduct.image)}" alt="Preview" 
+                                     style="width: 64px; height: 64px; object-fit: cover; border-radius: var(--radius-sm); border: 1px solid var(--border-color);" />
+                                <span style="font-size: 0.8rem; color: var(--text-dim); max-width: 350px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                    #{adminMB.editingProduct.image}
+                                </span>
+                            </div>
+                        </ui:fragment>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Mô tả sản phẩm chi tiết</label>
+                        <h:inputTextarea id="pDesc" value="#{adminMB.editingProduct.description}" rows="4" styleClass="form-control" 
+                                         placeholder="Thông số switch, cảm biến, kết nối không dây, phụ kiện đi kèm..." />
+                    </div>
+
+                    <div style="display: flex; gap: 14px; margin-top: 30px;">
+                        <h:commandButton value="Lưu Sản Phẩm" action="#{adminMB.saveProduct()}" styleClass="btn btn-primary" style="padding: 12px 30px;" />
+                        <h:link outcome="/admin/products.xhtml" styleClass="btn btn-outline" style="padding: 12px 24px;">Hủy Bỏ</h:link>
+                    </div>
+                </h:form>
+            </div>
+        </ui:define>
+    </ui:composition>
+</html>

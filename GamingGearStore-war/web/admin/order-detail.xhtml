@@ -1,0 +1,152 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets">
+
+    <ui:composition template="/templates/admin-template.xhtml">
+        <ui:define name="title">Chi Tiết Đơn Hàng #ORD-#{adminMB.viewingOrder.orderID} - Gaming Gear Store</ui:define>
+
+        <ui:define name="content">
+            <div class="admin-header">
+                <div>
+                    <h1 class="page-title">CHI TIẾT ĐƠN HÀNG #ORD-#{adminMB.viewingOrder.orderID}</h1>
+                    <p style="color: var(--text-muted); font-size: 0.92rem; margin-top: 4px;">
+                        Xem danh sách phụ kiện đã mua, thông tin người nhận và cập nhật trạng thái đơn
+                    </p>
+                </div>
+                <h:link outcome="/admin/orders.xhtml" styleClass="btn btn-outline">
+                    <i class="fa-solid fa-arrow-left"></i> Quay Lại Danh Sách Đơn
+                </h:link>
+            </div>
+
+            <!-- Alert Message -->
+            <ui:fragment rendered="#{not empty adminMB.orderMessage}">
+                <div class="alert alert-success">
+                    <i class="fa-solid fa-circle-check" style="margin-right: 8px;"></i>
+                    #{adminMB.orderMessage}
+                </div>
+            </ui:fragment>
+
+            <!-- Grid Layout: Thông tin đơn & Danh sách sản phẩm -->
+            <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 30px; align-items: start;">
+                <!-- Cột Thông tin khách hàng & Trạng thái -->
+                <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 24px;">
+                    <h3 style="font-family: 'Rajdhani', sans-serif; font-size: 1.3rem; font-weight: 700; margin-bottom: 16px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">
+                        Thông Tin Đơn Hàng
+                    </h3>
+
+                    <div style="display: flex; flex-direction: column; gap: 12px; font-size: 0.92rem;">
+                        <div>
+                            <span style="color: var(--text-muted);">Khách hàng:</span>
+                            <div style="font-weight: 600; color: #fff;">#{adminMB.viewingOrder.customerName}</div>
+                        </div>
+                        <div>
+                            <span style="color: var(--text-muted);">Số điện thoại:</span>
+                            <div style="font-weight: 600; color: #fff;">#{adminMB.viewingOrder.phone}</div>
+                        </div>
+                        <div>
+                            <span style="color: var(--text-muted);">Email:</span>
+                            <div style="font-weight: 600; color: #fff;">#{not empty adminMB.viewingOrder.email ? adminMB.viewingOrder.email : 'Không cung cấp'}</div>
+                        </div>
+                        <div>
+                            <span style="color: var(--text-muted);">Địa chỉ giao hàng:</span>
+                            <div style="font-weight: 600; color: #fff;">#{adminMB.viewingOrder.shippingAddress}</div>
+                        </div>
+                        <div>
+                            <span style="color: var(--text-muted);">Ngày đặt hàng:</span>
+                            <div style="font-weight: 600; color: #fff;">
+                                <h:outputText value="#{adminMB.viewingOrder.orderDate}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+                                </h:outputText>
+                            </div>
+                        </div>
+                        <div style="border-top: 1px solid var(--border-color); padding-top: 12px;">
+                            <span style="color: var(--text-muted);">Trạng thái hiện tại:</span>
+                            <div style="font-weight: 700; font-size: 1.1rem; color: var(--primary); margin-top: 4px;">
+                                #{adminMB.viewingOrder.status}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Nút thao tác xác nhận đơn hàng -->
+                    <div style="margin-top: 24px; border-top: 1px dashed var(--border-color); padding-top: 20px;">
+                        <h4 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 12px;">Cập Nhật Trạng Thái:</h4>
+                        <h:form style="display: flex; flex-direction: column; gap: 10px;">
+                            <ui:fragment rendered="#{adminMB.viewingOrder.status eq 'Chờ xác nhận'}">
+                                <h:commandButton value="✔ Xác Nhận Đơn Hàng" action="#{adminMB.confirmOrder(adminMB.viewingOrder)}" styleClass="btn btn-success" style="width: 100%;" />
+                            </ui:fragment>
+                            <ui:fragment rendered="#{adminMB.viewingOrder.status eq 'Đã xác nhận'}">
+                                <h:commandButton value="🚚 Chuyển Sang Đang Giao" action="#{adminMB.shipOrder(adminMB.viewingOrder)}" styleClass="btn btn-primary" style="width: 100%;" />
+                            </ui:fragment>
+                            <ui:fragment rendered="#{adminMB.viewingOrder.status eq 'Đang giao'}">
+                                <h:commandButton value="🎉 Hoàn Tất Đơn Hàng" action="#{adminMB.completeOrder(adminMB.viewingOrder)}" styleClass="btn btn-success" style="width: 100%;" />
+                            </ui:fragment>
+                            <ui:fragment rendered="#{adminMB.viewingOrder.status ne 'Hoàn thành' and adminMB.viewingOrder.status ne 'Đã hủy'}">
+                                <h:commandButton value="✖ Hủy Đơn Hàng" action="#{adminMB.cancelOrder(adminMB.viewingOrder)}" onclick="return confirm('Bạn có chắc chắn muốn hủy đơn hàng này?');" styleClass="btn btn-danger" style="width: 100%;" />
+                            </ui:fragment>
+                        </h:form>
+                    </div>
+                </div>
+
+                <!-- Cột Chi tiết các sản phẩm trong đơn -->
+                <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 24px;">
+                    <h3 style="font-family: 'Rajdhani', sans-serif; font-size: 1.3rem; font-weight: 700; margin-bottom: 16px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">
+                        Danh Sách Sản Phẩm Đặt Mua
+                    </h3>
+
+                    <div class="table-responsive">
+                        <table class="gear-table">
+                            <thead>
+                                <tr>
+                                    <th>Sản Phẩm</th>
+                                    <th>Đơn Giá</th>
+                                    <th style="text-align: center;">Số Lượng</th>
+                                    <th style="text-align: right;">Thành Tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <ui:repeat value="#{adminMB.viewingOrderDetails}" var="od">
+                                    <tr>
+                                        <td>
+                                            <div style="display: flex; align-items: center; gap: 12px;">
+                                                <img src="#{productMB.getImageUrl(od.productID.image)}" alt="#{od.productID.productName}" 
+                                                     style="width: 44px; height: 44px; object-fit: cover; border-radius: var(--radius-sm); border: 1px solid var(--border-color);" />
+                                                <div>
+                                                    <div style="font-weight: 600;">#{od.productID.productName}</div>
+                                                    <div style="font-size: 0.78rem; color: var(--secondary);">Hãng: #{od.productID.brand}</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <h:outputText value="#{od.unitPrice}">
+                                                <f:convertNumber pattern="#,### ₫" />
+                                            </h:outputText>
+                                        </td>
+                                        <td style="text-align: center; font-weight: 700;">#{od.quantity}</td>
+                                        <td style="text-align: right; font-family: 'Rajdhani', sans-serif; font-weight: 700; color: var(--primary); font-size: 1.1rem;">
+                                            <h:outputText value="#{od.unitPrice * od.quantity}">
+                                                <f:convertNumber pattern="#,### ₫" />
+                                            </h:outputText>
+                                        </td>
+                                    </tr>
+                                </ui:repeat>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div style="display: flex; justify-content: flex-end; align-items: baseline; gap: 14px; margin-top: 20px; padding-top: 14px; border-top: 1px solid var(--border-color);">
+                        <span style="font-size: 1.1rem; font-weight: 700;">Tổng Tiền Đơn Hàng:</span>
+                        <span style="font-family: 'Rajdhani', sans-serif; font-size: 2rem; font-weight: 700; color: var(--primary);">
+                            <h:outputText value="#{adminMB.viewingOrder.totalAmount}">
+                                <f:convertNumber pattern="#,### ₫" />
+                            </h:outputText>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </ui:define>
+    </ui:composition>
+</html>

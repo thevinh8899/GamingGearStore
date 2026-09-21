@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets">
+
+    <ui:composition template="/templates/admin-template.xhtml">
+        <ui:define name="title">Quản Lý Danh Mục - Gaming Gear Store</ui:define>
+
+        <ui:define name="content">
+            <div class="admin-header">
+                <div>
+                    <h1 class="page-title">QUẢN LÝ DANH MỤC (CRUD + TÌM KIẾM)</h1>
+                    <p style="color: var(--text-muted); font-size: 0.92rem; margin-top: 4px;">
+                        Quản lý các nhóm phụ kiện gaming: Bàn phím cơ, Chuột, Tai nghe, Lót chuột...
+                    </p>
+                </div>
+                <h:form>
+                    <h:commandLink action="#{adminMB.prepareCreateCategory()}" styleClass="btn btn-primary">
+                        <i class="fa-solid fa-plus"></i> Thêm Danh Mục Mới
+                    </h:commandLink>
+                </h:form>
+            </div>
+
+            <!-- Alert Message -->
+            <ui:fragment rendered="#{not empty adminMB.categoryMessage}">
+                <div class="alert alert-success">
+                    <i class="fa-solid fa-circle-check" style="margin-right: 8px;"></i>
+                    #{adminMB.categoryMessage}
+                </div>
+            </ui:fragment>
+
+            <!-- Search Bar -->
+            <h:form id="catSearchForm" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 18px 24px; margin-bottom: 24px;">
+                <div style="display: flex; gap: 16px; align-items: center;">
+                    <div style="flex: 1;">
+                        <h:inputText value="#{adminMB.categoryKeyword}" styleClass="form-control" placeholder="Tìm theo tên danh mục phụ kiện..." />
+                    </div>
+                    <h:commandButton value="Tìm Kiếm" styleClass="btn btn-primary" />
+                    <h:commandButton value="Làm Mới" action="#{adminMB.setCategoryKeyword(null)}" styleClass="btn btn-outline" />
+                </div>
+            </h:form>
+
+            <!-- Categories Table -->
+            <div class="table-responsive">
+                <table class="gear-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 70px;">Mã DM</th>
+                            <th>Tên Danh Mục Phụ Kiện</th>
+                            <th>Mô Tả Chi Tiết</th>
+                            <th style="text-align: center; width: 140px;">Hành Động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ui:repeat value="#{adminMB.adminCategories}" var="cat">
+                            <tr>
+                                <td style="font-weight: 700; color: var(--text-dim);">##{cat.categoryID}</td>
+                                <td style="font-weight: 600; font-size: 1rem; color: var(--primary);">#{cat.categoryName}</td>
+                                <td style="color: var(--text-muted); font-size: 0.9rem;">#{cat.description}</td>
+                                <td style="text-align: center;">
+                                    <h:form style="display: inline-flex; gap: 8px;">
+                                        <h:commandLink action="#{adminMB.prepareEditCategory(cat)}" styleClass="btn btn-sm btn-outline" title="Chỉnh sửa">
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                        </h:commandLink>
+                                        <h:commandLink action="#{adminMB.deleteCategory(cat)}" onclick="return confirm('Bạn có chắc chắn muốn xóa danh mục này?');" 
+                                                       styleClass="btn btn-sm btn-danger" title="Xóa">
+                                            <i class="fa-regular fa-trash-can"></i>
+                                        </h:commandLink>
+                                    </h:form>
+                                </td>
+                            </tr>
+                        </ui:repeat>
+                    </tbody>
+                </table>
+            </div>
+        </ui:define>
+    </ui:composition>
+</html>

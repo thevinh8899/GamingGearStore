@@ -1,0 +1,107 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets">
+
+    <ui:composition template="/templates/template.xhtml">
+        <ui:define name="title">Danh Sách Phụ Kiện Gaming - Gaming Gear Store</ui:define>
+
+        <ui:define name="content">
+            <f:metadata>
+                <f:viewParam name="cat" value="#{productMB.selectedCategoryId}" />
+                <f:viewParam name="search" value="#{productMB.searchKeyword}" />
+            </f:metadata>
+
+            <div class="page-header">
+                <div>
+                    <h2 class="page-title">Danh Sách Phụ Kiện Gaming</h2>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 4px;">
+                        Khám phá tất cả các thiết bị gaming chuyên nghiệp chính hãng
+                    </p>
+                </div>
+            </div>
+
+            <!-- Filter Controls -->
+            <h:form id="filterForm" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 20px; margin-bottom: 30px;">
+                <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: center; justify-content: space-between;">
+                    <!-- Lọc theo danh mục -->
+                    <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                        <span style="font-weight: 600; font-size: 0.9rem; color: var(--text-muted);"><i class="fa-solid fa-filter"></i> Danh mục:</span>
+                        <h:commandLink action="#{productMB.resetFilter()}" 
+                                       styleClass="btn btn-sm #{productMB.selectedCategoryId == null ? 'btn-primary' : 'btn-outline'}">
+                            Tất cả
+                        </h:commandLink>
+                        <ui:repeat value="#{productMB.allCategories}" var="cat">
+                            <h:commandLink action="#{productMB.filterByCategory(cat.categoryID)}" 
+                                           styleClass="btn btn-sm #{productMB.selectedCategoryId == cat.categoryID ? 'btn-primary' : 'btn-outline'}">
+                                #{cat.categoryName}
+                            </h:commandLink>
+                        </ui:repeat>
+                    </div>
+
+                    <!-- Tìm kiếm & Lọc hãng -->
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <h:inputText value="#{productMB.searchKeyword}" styleClass="form-control" style="width: 220px; padding: 6px 12px; font-size: 0.88rem;" placeholder="Tìm theo tên gear..." />
+                        <h:commandButton value="Tìm kiếm" styleClass="btn btn-sm btn-primary" />
+                        <h:commandButton value="Làm mới" action="#{productMB.resetFilter()}" styleClass="btn btn-sm btn-outline" />
+                    </div>
+                </div>
+            </h:form>
+
+            <!-- Product Grid -->
+            <h:form id="productListForm">
+                <ui:fragment rendered="#{empty productMB.filteredProducts}">
+                    <div style="text-align: center; padding: 60px 20px; background: var(--bg-card); border-radius: var(--radius-lg); border: 1px solid var(--border-color);">
+                        <i class="fa-regular fa-folder-open" style="font-size: 3rem; color: var(--text-dim); margin-bottom: 14px;"></i>
+                        <h3 style="font-size: 1.2rem; color: var(--text-muted); margin-bottom: 8px;">Không tìm thấy sản phẩm nào!</h3>
+                        <p style="color: var(--text-dim); font-size: 0.9rem; margin-bottom: 20px;">Vui lòng thử tìm với từ khóa khác hoặc xóa bộ lọc.</p>
+                        <h:commandLink action="#{productMB.resetFilter()}" styleClass="btn btn-primary">
+                            Xem Tất Cả Sản Phẩm
+                        </h:commandLink>
+                    </div>
+                </ui:fragment>
+
+                <div class="product-grid">
+                    <ui:repeat value="#{productMB.filteredProducts}" var="p">
+                        <div class="product-card">
+                            <div class="product-img-wrapper">
+                                <span class="product-badge">#{p.brand}</span>
+                                <img src="#{productMB.getImageUrl(p.image)}" alt="#{p.productName}" class="product-img" />
+                            </div>
+                            <div class="product-info">
+                                <span class="product-brand">#{p.categoryID != null ? p.categoryID.categoryName : 'Phụ Kiện'}</span>
+                                <h3 class="product-name">
+                                    <h:commandLink action="#{productMB.viewDetail(p.productID)}" style="color: inherit;">
+                                        #{p.productName}
+                                    </h:commandLink>
+                                </h3>
+                                <div class="product-price">
+                                    <h:outputText value="#{p.price}">
+                                        <f:convertNumber pattern="#,### ₫" />
+                                    </h:outputText>
+                                </div>
+                                <div class="product-stock #{p.quantity > 0 ? 'in' : 'out'}">
+                                    <i class="fa-solid #{p.quantity > 0 ? 'fa-circle-check' : 'fa-circle-xmark'}"></i>
+                                    #{p.quantity > 0 ? 'Còn hàng (' : 'Hết hàng'}#{p.quantity > 0 ? p.quantity : ''}#{p.quantity > 0 ? ' cái)' : ''}
+                                </div>
+                                <div class="product-actions">
+                                    <h:commandLink action="#{productMB.viewDetail(p.productID)}" styleClass="btn btn-sm btn-outline" style="flex:1;">
+                                        <i class="fa-regular fa-eye"></i> Chi Tiết
+                                    </h:commandLink>
+                                    <ui:fragment rendered="#{p.quantity > 0}">
+                                        <h:commandLink action="#{cartMB.addToCart(p, 1)}" styleClass="btn btn-sm btn-primary">
+                                            <i class="fa-solid fa-cart-plus"></i>
+                                        </h:commandLink>
+                                    </ui:fragment>
+                                </div>
+                            </div>
+                        </div>
+                    </ui:repeat>
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

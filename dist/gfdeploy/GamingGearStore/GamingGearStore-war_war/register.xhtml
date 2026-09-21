@@ -1,0 +1,108 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets">
+
+    <ui:composition template="/templates/template.xhtml">
+        <ui:define name="title">Đăng Ký Tài Khoản - Gaming Gear Store</ui:define>
+
+        <ui:define name="content">
+            <div class="form-card" style="max-width: 650px;">
+                <div style="text-align: center; margin-bottom: 28px;">
+                    <div style="font-family: 'Rajdhani', sans-serif; font-size: 2.2rem; font-weight: 700;">
+                        TẠO <span style="color: var(--primary);">TÀI KHOẢN MỚI</span>
+                    </div>
+                    <p style="color: var(--text-muted); font-size: 0.92rem; margin-top: 6px;">
+                        Gia nhập cộng đồng game thủ để nhận ưu đãi và tích lũy điểm thưởng!
+                    </p>
+                </div>
+
+                <!-- Alert Message -->
+                <ui:fragment rendered="#{not empty authMB.registerMessage}">
+                    <div class="alert alert-danger">
+                        <i class="fa-solid fa-triangle-exclamation" style="margin-right: 8px;"></i>
+                        #{authMB.registerMessage}
+                    </div>
+                </ui:fragment>
+
+                <h:form id="registerForm">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                        <div class="form-group">
+                            <label class="form-label">Tên đăng nhập (*)</label>
+                            <h:inputText id="regUsername" value="#{authMB.regUsername}" styleClass="form-control" required="true"
+                                         requiredMessage="Tên đăng nhập không được để trống!">
+                                <f:validateLength minimum="4" maximum="30" />
+                            </h:inputText>
+                            <h:message for="regUsername" styleClass="error-message" />
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Họ và tên (*)</label>
+                            <h:inputText id="regFullName" value="#{authMB.regFullName}" styleClass="form-control" required="true"
+                                         requiredMessage="Họ và tên không được để trống!"
+                                         placeholder="Nguyễn Văn A" />
+                            <h:message for="regFullName" styleClass="error-message" />
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                        <div class="form-group">
+                            <label class="form-label">Mật khẩu (*)</label>
+                            <h:inputSecret id="regPassword" value="#{authMB.regPassword}" styleClass="form-control" required="true"
+                                           requiredMessage="Mật khẩu không được để trống!">
+                                <f:validateLength minimum="6" maximum="50" />
+                            </h:inputSecret>
+                            <h:message for="regPassword" styleClass="error-message" />
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Xác nhận mật khẩu (*)</label>
+                            <h:inputSecret id="regConfirmPassword" value="#{authMB.regConfirmPassword}" styleClass="form-control" required="true"
+                                           requiredMessage="Vui lòng xác nhận lại mật khẩu!" />
+                            <h:message for="regConfirmPassword" styleClass="error-message" />
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                        <div class="form-group">
+                            <label class="form-label">Địa chỉ Email (*)</label>
+                            <h:inputText id="regEmail" value="#{authMB.regEmail}" styleClass="form-control" required="true"
+                                         requiredMessage="Email không được để trống!"
+                                         placeholder="gamer@gmail.com">
+                                <f:validateRegex pattern="^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$" />
+                            </h:inputText>
+                            <h:message for="regEmail" styleClass="error-message" />
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Số điện thoại (*)</label>
+                            <h:inputText id="regPhone" value="#{authMB.regPhone}" styleClass="form-control" required="true"
+                                         requiredMessage="Số điện thoại không được để trống!"
+                                         placeholder="0912345678">
+                                <f:validateRegex pattern="^[0-9]{10,11}$" />
+                            </h:inputText>
+                            <h:message for="regPhone" styleClass="error-message" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Địa chỉ giao hàng</label>
+                        <h:inputText id="regAddress" value="#{authMB.regAddress}" styleClass="form-control" 
+                                     placeholder="Số nhà, tên đường, phường/xã, quận/huyện, tỉnh/thành" />
+                    </div>
+
+                    <div style="margin-bottom: 24px;">
+                        <h:commandButton value="Đăng Ký Tài Khoản" action="#{authMB.register()}" styleClass="btn btn-primary" style="width: 100%; padding: 12px; font-size: 1rem;" />
+                    </div>
+
+                    <div style="text-align: center; font-size: 0.92rem; color: var(--text-muted);">
+                        Đã có tài khoản? <h:link outcome="/login.xhtml" style="color: var(--primary); font-weight: 600;">Đăng nhập ngay</h:link>
+                    </div>
+                </h:form>
+            </div>
+        </ui:define>
+    </ui:composition>
+</html>

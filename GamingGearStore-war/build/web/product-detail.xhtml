@@ -1,0 +1,145 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets">
+
+    <ui:composition template="/templates/template.xhtml">
+        <ui:define name="title">#{productMB.currentProduct != null ? productMB.currentProduct.productName : 'Chi Tiết Sản Phẩm'} - Gaming Gear Store</ui:define>
+
+        <ui:define name="content">
+            <!-- Breadcrumbs -->
+            <div style="margin-bottom: 24px; font-size: 0.9rem; color: var(--text-muted);">
+                <h:link outcome="/index.xhtml" style="color: var(--text-muted);">Trang chủ</h:link>
+                <span style="margin: 0 8px;">/</span>
+                <h:link outcome="/products.xhtml" style="color: var(--text-muted);">Phụ kiện</h:link>
+                <span style="margin: 0 8px;">/</span>
+                <span style="color: var(--primary);">#{productMB.currentProduct.productName}</span>
+            </div>
+
+            <!-- Product Overview Section -->
+            <div style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 40px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 32px; margin-bottom: 40px;">
+                <!-- Product Image -->
+                <div style="border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border-color); background: #11151f; max-height: 420px; display: flex; align-items: center; justify-content: center;">
+                    <img src="#{productMB.getImageUrl(productMB.currentProduct.image)}" alt="#{productMB.currentProduct.productName}" style="width: 100%; height: 100%; object-fit: cover;" />
+                </div>
+
+                <!-- Product Details -->
+                <div style="display: flex; flex-direction: column;">
+                    <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 12px;">
+                        <span class="product-badge" style="position: static;">#{productMB.currentProduct.brand}</span>
+                        <span style="color: var(--text-muted); font-size: 0.85rem;">
+                            Danh mục: <strong>#{productMB.currentProduct.categoryID != null ? productMB.currentProduct.categoryID.categoryName : 'Phụ Kiện'}</strong>
+                        </span>
+                    </div>
+
+                    <h1 style="font-family: 'Rajdhani', sans-serif; font-size: 2.2rem; font-weight: 700; line-height: 1.2; margin-bottom: 16px;">
+                        #{productMB.currentProduct.productName}
+                    </h1>
+
+                    <div style="font-family: 'Rajdhani', sans-serif; font-size: 2.4rem; font-weight: 700; color: var(--primary); margin-bottom: 20px;">
+                        <h:outputText value="#{productMB.currentProduct.price}">
+                            <f:convertNumber pattern="#,### ₫" />
+                        </h:outputText>
+                    </div>
+
+                    <div style="margin-bottom: 20px; padding: 14px; background: var(--bg-surface); border-radius: var(--radius-md); border-left: 3px solid var(--primary);">
+                        <div style="font-weight: 600; font-size: 0.95rem; margin-bottom: 4px;">Mô tả sản phẩm:</div>
+                        <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.6;">
+                            #{productMB.currentProduct.description}
+                        </p>
+                    </div>
+
+                    <div style="margin-bottom: 24px;">
+                        <span style="font-weight: 600; margin-right: 10px;">Tình trạng kho:</span>
+                        <ui:fragment rendered="#{productMB.currentProduct.quantity > 0}">
+                            <span class="product-stock in" style="font-size: 0.95rem;">
+                                <i class="fa-solid fa-circle-check"></i> Còn hàng (#{productMB.currentProduct.quantity} sản phẩm)
+                            </span>
+                        </ui:fragment>
+                        <ui:fragment rendered="#{productMB.currentProduct.quantity &lt;= 0}">
+                            <span class="product-stock out" style="font-size: 0.95rem;">
+                                <i class="fa-solid fa-circle-xmark"></i> Hết hàng tạm thời
+                            </span>
+                        </ui:fragment>
+                    </div>
+
+                    <!-- Add to Cart Form -->
+                    <h:form id="detailCartForm" rendered="#{productMB.currentProduct.quantity > 0}" style="margin-top: auto; display: flex; gap: 14px;">
+                        <h:commandLink action="#{cartMB.addToCart(productMB.currentProduct, 1)}" styleClass="btn btn-primary" style="padding: 12px 28px; font-size: 1rem;">
+                            <i class="fa-solid fa-cart-plus"></i> Thêm Vào Giỏ Hàng
+                        </h:commandLink>
+                        <h:link outcome="/cart.xhtml" styleClass="btn btn-outline" style="padding: 12px 20px;">
+                            Xem Giỏ Hàng
+                        </h:link>
+                    </h:form>
+                </div>
+            </div>
+
+            <!-- ================= FEEDBACKS & REVIEWS SECTION ================= -->
+            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 32px;">
+                <h3 style="font-family: 'Rajdhani', sans-serif; font-size: 1.6rem; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+                    <i class="fa-regular fa-star" style="color: var(--warning);"></i> Đánh Giá Từ Khách Hàng
+                </h3>
+
+                <!-- Alert message -->
+                <ui:fragment rendered="#{not empty productMB.feedbackMessage}">
+                    <div class="alert alert-success">#{productMB.feedbackMessage}</div>
+                </ui:fragment>
+
+                <!-- Feedback Form -->
+                <h:form id="feedbackForm" style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 20px; margin-bottom: 30px;">
+                    <h4 style="font-size: 1.05rem; font-weight: 600; margin-bottom: 14px;">Để lại cảm nhận của bạn về sản phẩm</h4>
+
+                    <div style="display: grid; grid-template-columns: 1fr 3fr; gap: 16px; margin-bottom: 14px;">
+                        <div class="form-group">
+                            <label class="form-label">Đánh giá sao (*)</label>
+                            <h:selectOneMenu value="#{productMB.feedbackRating}" styleClass="form-control">
+                                <f:selectItem itemValue="5" itemLabel="⭐⭐⭐⭐⭐ (5 sao - Xuất sắc)" />
+                                <f:selectItem itemValue="4" itemLabel="⭐⭐⭐⭐ (4 sao - Rất tốt)" />
+                                <f:selectItem itemValue="3" itemLabel="⭐⭐⭐ (3 sao - Bình thường)" />
+                                <f:selectItem itemValue="2" itemLabel="⭐⭐ (2 sao - Tạm được)" />
+                                <f:selectItem itemValue="1" itemLabel="⭐ (1 sao - Kém)" />
+                            </h:selectOneMenu>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Nội dung nhận xét (*)</label>
+                            <h:inputTextarea value="#{productMB.feedbackContent}" rows="2" styleClass="form-control" placeholder="Chia sẻ cảm nhận về độ nảy, cảm biến, chất lượng..." />
+                        </div>
+                    </div>
+
+                    <h:commandButton value="Gửi Đánh Giá" action="#{productMB.submitFeedback()}" styleClass="btn btn-primary btn-sm" />
+                </h:form>
+
+                <!-- Feedback List -->
+                <div style="display: flex; flex-direction: column; gap: 14px;">
+                    <ui:fragment rendered="#{empty productMB.currentProductFeedbacks}">
+                        <p style="color: var(--text-dim); font-size: 0.92rem; font-style: italic;">Chưa có đánh giá nào cho sản phẩm này. Hãy là người đầu tiên trải nghiệm và chia sẻ!</p>
+                    </ui:fragment>
+
+                    <ui:repeat value="#{productMB.currentProductFeedbacks}" var="fb">
+                        <div style="padding: 16px; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-md);">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <i class="fa-solid fa-circle-user" style="color: var(--primary);"></i>
+                                    <span style="font-weight: 600;">#{fb.userID != null ? fb.userID.fullName : 'Game Thủ Ẩn Danh'}</span>
+                                </div>
+                                <div style="color: var(--warning); font-size: 0.85rem;">
+                                    #{fb.rating == 5 ? '⭐⭐⭐⭐⭐' : (fb.rating == 4 ? '⭐⭐⭐⭐' : (fb.rating == 3 ? '⭐⭐⭐' : (fb.rating == 2 ? '⭐⭐' : '⭐')))}
+                                </div>
+                            </div>
+                            <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.5;">#{fb.content}</p>
+                            <div style="font-size: 0.78rem; color: var(--text-dim); margin-top: 6px;">
+                                <h:outputText value="#{fb.createdAt}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+                                </h:outputText>
+                            </div>
+                        </div>
+                    </ui:repeat>
+                </div>
+            </div>
+        </ui:define>
+    </ui:composition>
+</html>

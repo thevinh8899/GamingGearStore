@@ -1,0 +1,131 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets">
+
+    <ui:composition template="/templates/template.xhtml">
+        <ui:define name="title">Thanh Toán Đơn Hàng - Gaming Gear Store</ui:define>
+
+        <ui:define name="content">
+            <div class="page-header">
+                <div>
+                    <h2 class="page-title">Xác Nhận &amp; Thanh Toán</h2>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 4px;">
+                        Vui lòng kiểm tra địa chỉ nhận hàng và chọn phương thức thanh toán phù hợp
+                    </p>
+                </div>
+            </div>
+
+            <!-- Error message if any -->
+            <ui:fragment rendered="#{not empty cartMB.checkoutError}">
+                <div class="alert alert-danger">
+                    <i class="fa-solid fa-triangle-exclamation" style="margin-right: 8px;"></i>
+                    #{cartMB.checkoutError}
+                </div>
+            </ui:fragment>
+
+            <div style="display: grid; grid-template-columns: 1.4fr 1fr; gap: 32px; align-items: start;">
+                <!-- Form nhập thông tin người nhận -->
+                <div class="form-card" style="max-width: 100%; margin: 0;">
+                    <h3 style="font-family: 'Rajdhani', sans-serif; font-size: 1.35rem; font-weight: 700; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">
+                        <i class="fa-solid fa-truck-ramp-box" style="color: var(--primary);"></i> 1. Thông Tin Nhận Hàng
+                    </h3>
+
+                    <h:form id="checkoutForm">
+                        <div class="form-group">
+                            <label class="form-label">Họ và tên người nhận (*)</label>
+                            <h:inputText id="cName" value="#{cartMB.customerName}" styleClass="form-control" required="true"
+                                         requiredMessage="Họ và tên không được để trống!" />
+                            <h:message for="cName" styleClass="error-message" />
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                            <div class="form-group">
+                                <label class="form-label">Số điện thoại (*)</label>
+                                <h:inputText id="cPhone" value="#{cartMB.phone}" styleClass="form-control" required="true"
+                                             requiredMessage="Số điện thoại không được để trống!">
+                                    <f:validateRegex pattern="^[0-9]{10,11}$" />
+                                </h:inputText>
+                                <h:message for="cPhone" styleClass="error-message" />
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Email</label>
+                                <h:inputText id="cEmail" value="#{cartMB.email}" styleClass="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Địa chỉ nhận hàng chi tiết (*)</label>
+                            <h:inputText id="cAddress" value="#{cartMB.shippingAddress}" styleClass="form-control" required="true"
+                                         requiredMessage="Địa chỉ giao hàng không được để trống!" 
+                                         placeholder="Số nhà, tên đường, phường/xã, quận/huyện..." />
+                            <h:message for="cAddress" styleClass="error-message" />
+                        </div>
+
+                        <h3 style="font-family: 'Rajdhani', sans-serif; font-size: 1.35rem; font-weight: 700; margin: 28px 0 16px 0; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">
+                            <i class="fa-regular fa-credit-card" style="color: var(--secondary);"></i> 2. Phương Thức Thanh Toán
+                        </h3>
+
+                        <div class="form-group">
+                            <h:selectOneRadio value="#{cartMB.paymentMethod}" layout="pageDirection" styleClass="gear-radio" style="display: flex; flex-direction: column; gap: 12px;">
+                                <f:selectItem itemValue="COD" itemLabel="Thanh toán tiền mặt khi nhận hàng (COD)" />
+                                <f:selectItem itemValue="VNPAY" itemLabel="Thanh toán qua Ví VNPAY / Quét mã QR" />
+                                <f:selectItem itemValue="BANK" itemLabel="Chuyển khoản trực tiếp ngân hàng (Internet Banking)" />
+                            </h:selectOneRadio>
+                        </div>
+
+                        <div style="margin-top: 28px;">
+                            <h:commandButton value="Hoàn Tất Đặt Hàng" action="#{cartMB.placeOrder()}" styleClass="btn btn-primary" style="width: 100%; padding: 14px; font-size: 1.05rem;" />
+                        </div>
+                    </h:form>
+                </div>
+
+                <!-- Tóm tắt các sản phẩm trong đơn -->
+                <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 24px;">
+                    <h3 style="font-family: 'Rajdhani', sans-serif; font-size: 1.35rem; font-weight: 700; margin-bottom: 16px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">
+                        Đơn Hàng (#{cartMB.totalQuantity} món)
+                    </h3>
+
+                    <div style="display: flex; flex-direction: column; gap: 14px; max-height: 360px; overflow-y: auto; margin-bottom: 16px;">
+                        <ui:repeat value="#{cartMB.items}" var="item">
+                            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem;">
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <img src="#{item.product.image}" alt="#{item.product.productName}" 
+                                         style="width: 44px; height: 44px; object-fit: cover; border-radius: var(--radius-sm);" />
+                                    <div>
+                                        <div style="font-weight: 600; max-width: 170px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">#{item.product.productName}</div>
+                                        <div style="color: var(--text-dim); font-size: 0.8rem;">SL: #{item.quantity}</div>
+                                    </div>
+                                </div>
+                                <div style="font-family: 'Rajdhani', sans-serif; font-weight: 700; color: var(--primary);">
+                                    <h:outputText value="#{item.subTotal}">
+                                        <f:convertNumber pattern="#,### ₫" />
+                                    </h:outputText>
+                                </div>
+                            </div>
+                        </ui:repeat>
+                    </div>
+
+                    <div style="border-top: 1px solid var(--border-color); padding-top: 14px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9rem; color: var(--text-muted);">
+                            <span>Phí giao hàng:</span>
+                            <span style="color: var(--success); font-weight: 600;">0 ₫ (Miễn phí)</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-top: 12px;">
+                            <span style="font-size: 1.05rem; font-weight: 700;">Tổng tiền:</span>
+                            <span style="font-family: 'Rajdhani', sans-serif; font-size: 1.7rem; font-weight: 700; color: var(--primary);">
+                                <h:outputText value="#{cartMB.totalAmount}">
+                                    <f:convertNumber pattern="#,### ₫" />
+                                </h:outputText>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ui:define>
+    </ui:composition>
+</html>
