@@ -1,183 +1,190 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="jakarta.faces.html"
-      xmlns:f="jakarta.faces.core"
-      xmlns:ui="jakarta.faces.facelets">
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="jakarta.faces.html" xmlns:f="jakarta.faces.core"
+    xmlns:ui="jakarta.faces.facelets">
 
-    <h:head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title><ui:insert name="title">Gaming Gear Store - Đẳng Cấp Game Thủ</ui:insert></title>
-        
-        <!-- Font Awesome Icons -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-        <!-- Custom Gaming CSS -->
-        <link rel="stylesheet" href="#{request.contextPath}/resources/css/gaming.css" />
-        <ui:insert name="custom-css"></ui:insert>
-    </h:head>
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+        <ui:insert name="title">Gaming Gear Store - Đẳng Cấp Game Thủ</ui:insert>
+    </title>
 
-    <h:body>
-        <!-- ================= HEADER ================= -->
-        <header class="site-header">
-            <div class="container">
-                <!-- Top Header Bar -->
-                <div class="nav-top">
-                    <!-- Brand Logo -->
-                    <h:link outcome="/index.xhtml" styleClass="brand-logo">
-                        <i class="fa-solid fa-gamepad" style="color: var(--primary);"></i>
-                        <span>GEAR<span class="accent">STORE</span></span>
-                        <span class="brand-badge">PRO</span>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <!-- Custom Gaming CSS -->
+    <link rel="stylesheet" href="#{request.contextPath}/resources/css/gaming.css" />
+    <ui:insert name="custom-css"></ui:insert>
+</h:head>
+
+<h:body>
+    <!-- ================= HEADER ================= -->
+    <header class="site-header">
+        <div class="container">
+            <!-- Top Header Bar -->
+            <div class="nav-top">
+                <!-- Brand Logo -->
+                <h:link outcome="/index.xhtml" styleClass="brand-logo">
+                    <i class="fa-solid fa-gamepad" style="color: var(--primary);"></i>
+                    <span>GEAR<span class="accent">STORE</span></span>
+                    <span class="brand-badge">PRO</span>
+                </h:link>
+
+                <!-- Search Box -->
+                <form action="#{request.contextPath}/faces/products.xhtml" method="get" class="search-form">
+                    <input type="text" name="search" class="search-input"
+                        placeholder="Tìm chuột, phím cơ, tai nghe gaming..." />
+                    <button type="submit" class="search-btn">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                </form>
+
+                <!-- User / Cart Actions -->
+                <div class="header-actions">
+                    <!-- Giỏ hàng -->
+                    <h:link outcome="/cart.xhtml" styleClass="action-btn">
+                        <i class="fa-solid fa-cart-shopping" style="color: var(--primary);"></i>
+                        <span>Giỏ Hàng</span>
+                        <span class="cart-badge">#{not empty sessionScope.cart ? sessionScope.cart.size() : 0}</span>
                     </h:link>
 
-                    <!-- Search Box -->
-                    <form action="#{request.contextPath}/faces/products.xhtml" method="get" class="search-form">
-                        <input type="text" name="search" class="search-input" placeholder="Tìm chuột, phím cơ, tai nghe gaming..." />
-                        <button type="submit" class="search-btn">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                        </button>
-                    </form>
-
-                    <!-- User / Cart Actions -->
-                    <div class="header-actions">
-                        <!-- Giỏ hàng -->
-                        <h:link outcome="/cart.xhtml" styleClass="action-btn">
-                            <i class="fa-solid fa-cart-shopping" style="color: var(--primary);"></i>
-                            <span>Giỏ Hàng</span>
-                            <span class="cart-badge">#{not empty sessionScope.cart ? sessionScope.cart.size() : 0}</span>
+                    <!-- Đăng nhập / Tài khoản -->
+                    <ui:fragment rendered="#{empty sessionScope.loggedUser}">
+                        <h:link outcome="/login.xhtml" styleClass="action-btn">
+                            <i class="fa-regular fa-user"></i>
+                            <span>Đăng Nhập</span>
                         </h:link>
+                        <h:link outcome="/register.xhtml" styleClass="btn btn-sm btn-primary">
+                            <span>Đăng Ký</span>
+                        </h:link>
+                    </ui:fragment>
 
-                        <!-- Đăng nhập / Tài khoản -->
-                        <ui:fragment rendered="#{empty sessionScope.loggedUser}">
-                            <h:link outcome="/login.xhtml" styleClass="action-btn">
-                                <i class="fa-regular fa-user"></i>
-                                <span>Đăng Nhập</span>
-                            </h:link>
-                            <h:link outcome="/register.xhtml" styleClass="btn btn-sm btn-primary">
-                                <span>Đăng Ký</span>
-                            </h:link>
-                        </ui:fragment>
-
-                        <ui:fragment rendered="#{not empty sessionScope.loggedUser}">
-                            <div class="action-btn" style="border-color: var(--secondary);">
-                                <i class="fa-solid fa-circle-user" style="color: var(--secondary);"></i>
-                                <span>#{sessionScope.loggedUser.fullName}</span>
-                            </div>
-                            <!-- Nút Admin nếu là Admin -->
-                            <ui:fragment rendered="#{sessionScope.loggedUser.role eq 'admin'}">
-                                <h:link outcome="/admin/index.xhtml" styleClass="btn btn-sm btn-secondary">
-                                    <i class="fa-solid fa-shield-halved"></i> Quản Trị
-                                </h:link>
-                            </ui:fragment>
-                            <h:form style="display:inline;">
-                                <h:commandLink action="#{authMB.logout()}" styleClass="action-btn" style="color: var(--danger);">
-                                    <i class="fa-solid fa-right-from-bracket"></i>
-                                </h:commandLink>
-                            </h:form>
-                        </ui:fragment>
-                    </div>
-                </div>
-
-                <!-- Navigation Menu (Danh mục sản phẩm) -->
-                <nav class="nav-menu">
-                    <ul class="nav-links">
-                        <li>
-                            <h:link outcome="/index.xhtml">
-                                <i class="fa-solid fa-house"></i> Trang Chủ
-                            </h:link>
-                        </li>
-                        <li>
-                            <h:link outcome="/products.xhtml">
-                                <i class="fa-solid fa-fire"></i> Tất Cả Sản Phẩm
-                            </h:link>
-                        </li>
-                        <li>
-                            <h:link outcome="/products.xhtml?cat=1">
-                                <i class="fa-regular fa-keyboard"></i> Bàn Phím Cơ
-                            </h:link>
-                        </li>
-                        <li>
-                            <h:link outcome="/products.xhtml?cat=2">
-                                <i class="fa-solid fa-computer-mouse"></i> Chuột Gaming
-                            </h:link>
-                        </li>
-                        <li>
-                            <h:link outcome="/products.xhtml?cat=3">
-                                <i class="fa-solid fa-headphones"></i> Tai Nghe Gaming
-                            </h:link>
-                        </li>
-                        <li>
-                            <h:link outcome="/products.xhtml?cat=4">
-                                <i class="fa-solid fa-rug"></i> Lót Chuột &amp; Phụ Kiện
-                            </h:link>
-                        </li>
-                        <li>
-                            <h:link outcome="/products.xhtml?cat=5">
-                                <i class="fa-solid fa-gamepad"></i> Tay Cầm Chơi Game
-                            </h:link>
-                        </li>
-                        <li>
-                            <h:link outcome="/feedback.xhtml">
-                                <i class="fa-solid fa-comment-dots"></i> Góp Ý
-                            </h:link>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-        </header>
-
-        <!-- ================= MAIN CONTENT ================= -->
-        <main class="main-wrapper">
-            <div class="container">
-                <ui:insert name="content">
-                    <!-- Nội dung trang con sẽ được chèn vào đây -->
-                </ui:insert>
-            </div>
-        </main>
-
-        <!-- ================= FOOTER ================= -->
-        <footer class="site-footer">
-            <div class="container">
-                <div class="footer-grid">
-                    <div class="footer-col">
-                        <div class="brand-logo" style="margin-bottom: 12px;">
-                            <i class="fa-solid fa-gamepad" style="color: var(--primary);"></i>
-                            <span>GEAR<span class="accent">STORE</span></span>
+                    <ui:fragment rendered="#{not empty sessionScope.loggedUser}">
+                        <div class="action-btn" style="border-color: var(--secondary);">
+                            <i class="fa-solid fa-circle-user" style="color: var(--secondary);"></i>
+                            <span>Xin chào, #{sessionScope.loggedUser.fullName}</span>
                         </div>
-                        <p>Hệ thống bán lẻ phụ kiện gaming cao cấp hàng đầu Việt Nam. Cam kết 100% chính hãng, bảo hành đổi mới 1-1, giao hàng thần tốc toàn quốc.</p>
-                    </div>
-                    <div class="footer-col">
-                        <h4>Danh Mục Gear</h4>
-                        <ul>
-                            <li><a href="#{request.contextPath}/faces/products.xhtml?cat=1">Bàn phím cơ</a></li>
-                            <li><a href="#{request.contextPath}/faces/products.xhtml?cat=2">Chuột gaming</a></li>
-                            <li><a href="#{request.contextPath}/faces/products.xhtml?cat=3">Tai nghe gaming</a></li>
-                            <li><a href="#{request.contextPath}/faces/products.xhtml?cat=5">Tay cầm chơi game</a></li>
-                        </ul>
-                    </div>
-                    <div class="footer-col">
-                        <h4>Chính Sách</h4>
-                        <ul>
-                            <li><a href="#">Chính sách bảo hành 1 đổi 1</a></li>
-                            <li><a href="#">Vận chuyển &amp; Giao hàng</a></li>
-                            <li><a href="#">Chính sách bảo mật</a></li>
-                            <li><a href="#">Điều khoản dịch vụ</a></li>
-                        </ul>
-                    </div>
-                    <div class="footer-col">
-                        <h4>Liên Hệ &amp; Hỗ Trợ</h4>
-                        <p><i class="fa-solid fa-location-dot" style="color:var(--primary); margin-right:6px;"></i> TP. Hồ Chí Minh, Việt Nam</p>
-                        <p><i class="fa-solid fa-phone" style="color:var(--primary); margin-right:6px;"></i> Hotline: 1900 8888</p>
-                        <p><i class="fa-solid fa-envelope" style="color:var(--primary); margin-right:6px;"></i> cskh@gearstore.vn</p>
-                    </div>
-                </div>
-                <div class="footer-bottom">
-                    &copy; 2026 GAMING GEAR STORE. All rights reserved. Designed for Pro Gamers.
+                        <!-- Nút Admin nếu là Admin -->
+                        <ui:fragment rendered="#{sessionScope.loggedUser.role eq 'admin'}">
+                            <h:link outcome="/admin/index.xhtml" styleClass="btn btn-sm btn-secondary">
+                                <i class="fa-solid fa-shield-halved"></i> Quản Trị
+                            </h:link>
+                        </ui:fragment>
+                        <h:form style="display:inline;">
+                            <h:commandLink action="#{authMB.logout()}" styleClass="action-btn"
+                                style="color: var(--danger);">
+                                <i class="fa-solid fa-right-from-bracket"></i>
+                            </h:commandLink>
+                        </h:form>
+                    </ui:fragment>
                 </div>
             </div>
-        </footer>
 
-        <ui:insert name="custom-js"></ui:insert>
-    </h:body>
+            <!-- Navigation Menu (Danh mục sản phẩm) -->
+            <nav class="nav-menu">
+                <ul class="nav-links">
+                    <li>
+                        <h:link outcome="/index.xhtml">
+                            <i class="fa-solid fa-house"></i> Trang Chủ
+                        </h:link>
+                    </li>
+                    <li>
+                        <h:link outcome="/products.xhtml">
+                            <i class="fa-solid fa-fire"></i> Tất Cả Sản Phẩm
+                        </h:link>
+                    </li>
+                    <li>
+                        <h:link outcome="/products.xhtml?cat=1">
+                            <i class="fa-regular fa-keyboard"></i> Bàn Phím Cơ
+                        </h:link>
+                    </li>
+                    <li>
+                        <h:link outcome="/products.xhtml?cat=2">
+                            <i class="fa-solid fa-computer-mouse"></i> Chuột Gaming
+                        </h:link>
+                    </li>
+                    <li>
+                        <h:link outcome="/products.xhtml?cat=3">
+                            <i class="fa-solid fa-headphones"></i> Tai Nghe Gaming
+                        </h:link>
+                    </li>
+                    <li>
+                        <h:link outcome="/products.xhtml?cat=4">
+                            <i class="fa-solid fa-rug"></i> Lót Chuột &amp; Phụ Kiện
+                        </h:link>
+                    </li>
+                    <li>
+                        <h:link outcome="/products.xhtml?cat=5">
+                            <i class="fa-solid fa-gamepad"></i> Tay Cầm Chơi Game
+                        </h:link>
+                    </li>
+                    <li>
+                        <h:link outcome="/feedback.xhtml">
+                            <i class="fa-solid fa-comment-dots"></i> Góp Ý
+                        </h:link>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ================= MAIN CONTENT ================= -->
+    <main class="main-wrapper">
+        <div class="container">
+            <ui:insert name="content">
+                <!-- Nội dung trang con sẽ được chèn vào đây -->
+            </ui:insert>
+        </div>
+    </main>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="brand-logo" style="margin-bottom: 12px;">
+                        <i class="fa-solid fa-gamepad" style="color: var(--primary);"></i>
+                        <span>GEAR<span class="accent">STORE</span></span>
+                    </div>
+                    <p>Hệ thống bán lẻ phụ kiện gaming cao cấp hàng đầu Việt Nam. Cam kết 100% chính hãng, bảo hành đổi
+                        mới 1-1, giao hàng thần tốc toàn quốc.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Danh Mục Gear</h4>
+                    <ul>
+                        <li><a href="#{request.contextPath}/faces/products.xhtml?cat=1">Bàn phím cơ</a></li>
+                        <li><a href="#{request.contextPath}/faces/products.xhtml?cat=2">Chuột gaming</a></li>
+                        <li><a href="#{request.contextPath}/faces/products.xhtml?cat=3">Tai nghe gaming</a></li>
+                        <li><a href="#{request.contextPath}/faces/products.xhtml?cat=5">Tay cầm chơi game</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Chính Sách</h4>
+                    <ul>
+                        <li><a href="#">Chính sách bảo hành 1 đổi 1</a></li>
+                        <li><a href="#">Vận chuyển &amp; Giao hàng</a></li>
+                        <li><a href="#">Chính sách bảo mật</a></li>
+                        <li><a href="#">Điều khoản dịch vụ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Liên Hệ &amp; Hỗ Trợ</h4>
+                    <p><i class="fa-solid fa-location-dot" style="color:var(--primary); margin-right:6px;"></i> TP. Hồ
+                        Chí Minh, Việt Nam</p>
+                    <p><i class="fa-solid fa-phone" style="color:var(--primary); margin-right:6px;"></i> Hotline: 1900
+                        8888</p>
+                    <p><i class="fa-solid fa-envelope" style="color:var(--primary); margin-right:6px;"></i>
+                        cskh@gearstore.vn</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2026 GAMING GEAR STORE. All rights reserved. Designed for Pro Gamers.
+            </div>
+        </div>
+    </footer>
+
+    <ui:insert name="custom-js"></ui:insert>
+</h:body>
+
 </html>

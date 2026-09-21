@@ -404,6 +404,26 @@ a:hover {
     border-color: rgba(239, 68, 68, 0.4);
 }
 
+.product-badge.badge-success {
+    color: var(--success);
+    border-color: rgba(16, 185, 129, 0.4);
+}
+
+.product-badge.badge-warning {
+    color: var(--warning);
+    border-color: rgba(245, 158, 11, 0.4);
+}
+
+.product-badge.badge-danger {
+    color: var(--danger);
+    border-color: rgba(239, 68, 68, 0.4);
+}
+
+.product-badge.badge-primary {
+    color: var(--primary);
+    border-color: rgba(0, 240, 255, 0.4);
+}
+
 .product-info {
     padding: 18px;
     display: flex;

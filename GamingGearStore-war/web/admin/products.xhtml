@@ -1,106 +1,112 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="jakarta.faces.html"
-      xmlns:f="jakarta.faces.core"
-      xmlns:ui="jakarta.faces.facelets">
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="jakarta.faces.html" xmlns:f="jakarta.faces.core"
+    xmlns:ui="jakarta.faces.facelets">
 
-    <ui:composition template="/templates/admin-template.xhtml">
-        <ui:define name="title">Quản Lý Sản Phẩm - Gaming Gear Store</ui:define>
+<ui:composition template="/templates/admin-template.xhtml">
+    <ui:define name="title">Quản Lý Sản Phẩm - Gaming Gear Store</ui:define>
 
-        <ui:define name="content">
-            <div class="admin-header">
-                <div>
-                    <h1 class="page-title">QUẢN LÝ SẢN PHẨM (CRUD + TÌM KIẾM)</h1>
-                    <p style="color: var(--text-muted); font-size: 0.92rem; margin-top: 4px;">
-                        Quản lý toàn bộ thông tin phụ kiện gaming, giá bán, tồn kho và danh mục
-                    </p>
-                </div>
-                <h:form>
-                    <h:commandLink action="#{adminMB.prepareCreateProduct()}" styleClass="btn btn-primary">
-                        <i class="fa-solid fa-plus"></i> Thêm Sản Phẩm Mới
-                    </h:commandLink>
-                </h:form>
+    <ui:define name="content">
+        <div class="admin-header">
+            <div>
+                <h1 class="page-title">QUẢN LÝ SẢN PHẨM</h1>
+                <p style="color: var(--text-muted); font-size: 0.92rem; margin-top: 4px;">
+                    Quản lý toàn bộ thông tin phụ kiện gaming, giá bán, tồn kho và danh mục
+                </p>
             </div>
-
-            <!-- Alert Message -->
-            <ui:fragment rendered="#{not empty adminMB.productMessage}">
-                <div class="alert alert-success">
-                    <i class="fa-solid fa-circle-check" style="margin-right: 8px;"></i>
-                    #{adminMB.productMessage}
-                </div>
-            </ui:fragment>
-
-            <!-- Search & Filter Bar -->
-            <h:form id="productSearchForm" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 18px 24px; margin-bottom: 24px;">
-                <div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap;">
-                    <div style="flex: 1; min-width: 240px;">
-                        <h:inputText value="#{adminMB.productKeyword}" styleClass="form-control" placeholder="Tìm theo tên gear hoặc hãng sản xuất..." />
-                    </div>
-                    <div style="width: 220px;">
-                        <h:selectOneMenu value="#{adminMB.productFilterCatId}" styleClass="form-control">
-                            <f:selectItem itemValue="" itemLabel="-- Tất cả danh mục --" />
-                            <f:selectItems value="#{productMB.allCategories}" var="c" itemValue="#{c.categoryID}" itemLabel="#{c.categoryName}" />
-                        </h:selectOneMenu>
-                    </div>
-                    <h:commandButton value="Tìm Kiếm" styleClass="btn btn-primary" />
-                    <h:commandButton value="Làm Mới" action="#{adminMB.setProductKeyword(null)}" styleClass="btn btn-outline" />
-                </div>
+            <h:form>
+                <h:commandLink action="#{adminMB.prepareCreateProduct()}" styleClass="btn btn-primary">
+                    <i class="fa-solid fa-plus"></i> Thêm Sản Phẩm Mới
+                </h:commandLink>
             </h:form>
+        </div>
 
-            <!-- Product Table -->
-            <div class="table-responsive">
-                <table class="gear-table">
-                    <thead>
-                        <tr>
-                            <th style="width: 50px;">ID</th>
-                            <th style="width: 70px;">Hình Ảnh</th>
-                            <th>Tên Sản Phẩm</th>
-                            <th>Hãng</th>
-                            <th>Danh Mục</th>
-                            <th>Giá Bán</th>
-                            <th style="text-align: center;">Tồn Kho</th>
-                            <th style="text-align: center; width: 140px;">Hành Động</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <ui:repeat value="#{adminMB.adminProducts}" var="p">
-                            <tr>
-                                <td style="font-weight: 700; color: var(--text-dim);">##{p.productID}</td>
-                                <td>
-                                    <img src="#{productMB.getImageUrl(p.image)}" alt="#{p.productName}" 
-                                         style="width: 48px; height: 48px; object-fit: cover; border-radius: var(--radius-sm); border: 1px solid var(--border-color);" />
-                                </td>
-                                <td style="font-weight: 600;">#{p.productName}</td>
-                                <td><span class="product-badge" style="position: static;">#{p.brand}</span></td>
-                                <td>#{p.categoryID != null ? p.categoryID.categoryName : 'Chưa phân loại'}</td>
-                                <td style="font-family: 'Rajdhani', sans-serif; font-weight: 700; color: var(--primary); font-size: 1.1rem;">
-                                    <h:outputText value="#{p.price}">
-                                        <f:convertNumber pattern="#,### ₫" />
-                                    </h:outputText>
-                                </td>
-                                <td style="text-align: center;">
-                                    <span class="product-stock #{p.quantity > 0 ? 'in' : 'out'}">
-                                        #{p.quantity} cái
-                                    </span>
-                                </td>
-                                <td style="text-align: center;">
-                                    <h:form style="display: inline-flex; gap: 8px;">
-                                        <h:commandLink action="#{adminMB.prepareEditProduct(p)}" styleClass="btn btn-sm btn-outline" title="Chỉnh sửa">
-                                            <i class="fa-solid fa-pen-to-square"></i>
-                                        </h:commandLink>
-                                        <h:commandLink action="#{adminMB.deleteProduct(p)}" onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?');" 
-                                                       styleClass="btn btn-sm btn-danger" title="Xóa">
-                                            <i class="fa-regular fa-trash-can"></i>
-                                        </h:commandLink>
-                                    </h:form>
-                                </td>
-                            </tr>
-                        </ui:repeat>
-                    </tbody>
-                </table>
+        <!-- Alert Message -->
+        <ui:fragment rendered="#{not empty adminMB.productMessage}">
+            <div class="alert alert-success">
+                <i class="fa-solid fa-circle-check" style="margin-right: 8px;"></i>
+                #{adminMB.productMessage}
             </div>
-        </ui:define>
-    </ui:composition>
+        </ui:fragment>
+
+        <!-- Search & Filter Bar -->
+        <h:form id="productSearchForm"
+            style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 18px 24px; margin-bottom: 24px;">
+            <div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 240px;">
+                    <h:inputText value="#{adminMB.productKeyword}" styleClass="form-control"
+                        placeholder="Tìm theo tên gear hoặc hãng sản xuất..." />
+                </div>
+                <div style="width: 220px;">
+                    <h:selectOneMenu value="#{adminMB.productFilterCatId}" styleClass="form-control">
+                        <f:selectItem itemValue="" itemLabel="-- Tất cả danh mục --" />
+                        <f:selectItems value="#{productMB.allCategories}" var="c" itemValue="#{c.categoryID}"
+                            itemLabel="#{c.categoryName}" />
+                    </h:selectOneMenu>
+                </div>
+                <h:commandButton value="Tìm Kiếm" styleClass="btn btn-primary" />
+                <h:commandButton value="Làm Mới" action="#{adminMB.setProductKeyword(null)}"
+                    styleClass="btn btn-outline" />
+            </div>
+        </h:form>
+
+        <!-- Product Table -->
+        <div class="table-responsive">
+            <table class="gear-table">
+                <thead>
+                    <tr>
+                        <th style="width: 50px;">ID</th>
+                        <th style="width: 70px;">Hình Ảnh</th>
+                        <th>Tên Sản Phẩm</th>
+                        <th>Hãng</th>
+                        <th>Danh Mục</th>
+                        <th>Giá Bán</th>
+                        <th style="text-align: center;">Tồn Kho</th>
+                        <th style="text-align: center; width: 140px;">Hành Động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ui:repeat value="#{adminMB.adminProducts}" var="p">
+                        <tr>
+                            <td style="font-weight: 700; color: var(--text-dim);">#{p.productID}</td>
+                            <td>
+                                <img src="#{productMB.getImageUrl(p.image)}" alt="#{p.productName}"
+                                    style="width: 48px; height: 48px; object-fit: cover; border-radius: var(--radius-sm); border: 1px solid var(--border-color);" />
+                            </td>
+                            <td style="font-weight: 600;">#{p.productName}</td>
+                            <td><span class="product-badge" style="position: static;">#{p.brand}</span></td>
+                            <td>#{p.categoryID != null ? p.categoryID.categoryName : 'Chưa phân loại'}</td>
+                            <td
+                                style="font-family: 'Rajdhani', sans-serif; font-weight: 700; color: var(--primary); font-size: 1.1rem;">
+                                <h:outputText value="#{p.price}">
+                                    <f:convertNumber pattern="#,### ₫" />
+                                </h:outputText>
+                            </td>
+                            <td style="text-align: center;">
+                                <span class="product-stock #{p.quantity > 0 ? 'in' : 'out'}">
+                                    #{p.quantity} cái
+                                </span>
+                            </td>
+                            <td style="text-align: center;">
+                                <h:form style="display: inline-flex; gap: 8px;">
+                                    <h:commandLink action="#{adminMB.prepareEditProduct(p)}"
+                                        styleClass="btn btn-sm btn-outline" title="Chỉnh sửa">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                    </h:commandLink>
+                                    <h:commandLink action="#{adminMB.deleteProduct(p)}"
+                                        onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?');"
+                                        styleClass="btn btn-sm btn-danger" title="Xóa">
+                                        <i class="fa-regular fa-trash-can"></i>
+                                    </h:commandLink>
+                                </h:form>
+                            </td>
+                        </tr>
+                    </ui:repeat>
+                </tbody>
+            </table>
+        </div>
+    </ui:define>
+</ui:composition>
+
 </html>

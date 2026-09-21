@@ -1,17 +1,15 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="jakarta.faces.html"
-      xmlns:f="jakarta.faces.core"
-      xmlns:ui="jakarta.faces.facelets">
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="jakarta.faces.html" xmlns:f="jakarta.faces.core"
+    xmlns:ui="jakarta.faces.facelets">
 
-    <ui:composition template="/templates/template.xhtml">
-        <ui:define name="title">Gaming Gear Store - Thế Giới Phụ Kiện Game Thủ</ui:define>
+<ui:composition template="/templates/template.xhtml">
+    <ui:define name="title">Gaming Gear Store - Thế Giới Phụ Kiện Game Thủ</ui:define>
 
-        <ui:define name="content">
-            <!-- ================= HERO BANNER ================= -->
-            <div style="background: linear-gradient(135deg, #111827 0%, #1e1b4b 50%, #0f172a 100%); 
+    <ui:define name="content">
+        <!-- ================= HERO BANNER ================= -->
+        <div style="background: linear-gradient(135deg, #111827 0%, #1e1b4b 50%, #0f172a 100%); 
                         border: 1px solid var(--border-color); 
                         border-radius: var(--radius-lg); 
                         padding: 48px 36px; 
@@ -19,123 +17,140 @@
                         position: relative; 
                         overflow: hidden;
                         box-shadow: var(--shadow-card);">
-                <div style="position: absolute; right: -40px; bottom: -40px; opacity: 0.08; font-size: 16rem;">
-                    <i class="fa-solid fa-gamepad"></i>
-                </div>
+            <div style="position: absolute; right: -40px; bottom: -40px; opacity: 0.08; font-size: 16rem;">
+                <i class="fa-solid fa-gamepad"></i>
+            </div>
 
-                <div style="max-width: 650px; position: relative; z-index: 2;">
-                    <span style="display: inline-block; background: rgba(0, 240, 255, 0.15); color: var(--primary); 
+            <div style="max-width: 650px; position: relative; z-index: 2;">
+                <span style="display: inline-block; background: rgba(0, 240, 255, 0.15); color: var(--primary); 
                                  border: 1px solid var(--primary-glow); padding: 4px 14px; border-radius: 20px; 
                                  font-size: 0.82rem; font-weight: 700; letter-spacing: 1px; margin-bottom: 16px;">
-                        <i class="fa-solid fa-bolt"></i> PRO GAMING GEAR 2026
-                    </span>
-                    <h1 style="font-family: 'Rajdhani', sans-serif; font-size: 3.2rem; font-weight: 700; line-height: 1.15; margin-bottom: 18px; text-transform: uppercase;">
-                        GEAR UP FOR <span style="color: var(--primary); text-shadow: 0 0 16px var(--primary-glow);">VICTORY</span>
-                    </h1>
-                    <p style="color: var(--text-muted); font-size: 1.05rem; margin-bottom: 28px; line-height: 1.6;">
-                        Bàn phím cơ nhận lệnh tức thì, chuột siêu nhẹ tốc độ cao, tai nghe âm thanh vòm chuẩn thi đấu Esports từ Logitech G, Razer, Corsair.
-                    </p>
-                    <div style="display: flex; gap: 14px; flex-wrap: wrap;">
-                        <h:link outcome="/products.xhtml" styleClass="btn btn-primary">
-                            <i class="fa-solid fa-cart-shopping"></i> Mua Ngay Bây Giờ
-                        </h:link>
-                        <h:link outcome="/feedback.xhtml" styleClass="btn btn-outline">
-                            <i class="fa-regular fa-comment-dots"></i> Góp Ý &amp; Đánh Giá
-                        </h:link>
-                    </div>
+                    <i class="fa-solid fa-bolt"></i> PRO GAMING GEAR 2026
+                </span>
+                <h1
+                    style="font-family: 'Rajdhani', sans-serif; font-size: 3.2rem; font-weight: 700; line-height: 1.15; margin-bottom: 18px; text-transform: uppercase;">
+                    GEAR UP FOR <span
+                        style="color: var(--primary); text-shadow: 0 0 16px var(--primary-glow);">VICTORY</span>
+                </h1>
+                <p style="color: var(--text-muted); font-size: 1.05rem; margin-bottom: 28px; line-height: 1.6;">
+                    Bàn phím cơ nhận lệnh tức thì, chuột siêu nhẹ tốc độ cao, tai nghe âm thanh vòm chuẩn thi đấu
+                    Esports từ Logitech G, Razer, Corsair.
+                </p>
+                <div style="display: flex; gap: 14px; flex-wrap: wrap;">
+                    <h:link outcome="/products.xhtml" styleClass="btn btn-primary">
+                        <i class="fa-solid fa-cart-shopping"></i> Mua Ngay Bây Giờ
+                    </h:link>
+                    <h:link outcome="/feedback.xhtml" styleClass="btn btn-outline">
+                        <i class="fa-regular fa-comment-dots"></i> Góp Ý &amp; Đánh Giá
+                    </h:link>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= ADVANTAGES ================= -->
+        <div
+            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-bottom: 48px;">
+            <div
+                style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 20px; display: flex; align-items: center; gap: 16px;">
+                <div
+                    style="width: 48px; height: 48px; border-radius: 10px; background: rgba(0, 240, 255, 0.12); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 1.4rem;">
+                    <i class="fa-solid fa-shield-check"></i>
+                </div>
+                <div>
+                    <h4 style="font-size: 0.98rem; font-weight: 700;">100% Chính Hãng</h4>
+                    <p style="font-size: 0.82rem; color: var(--text-muted);">Cam kết sản phẩm phân phối chuẩn hãng</p>
                 </div>
             </div>
 
-            <!-- ================= ADVANTAGES ================= -->
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-bottom: 48px;">
-                <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 20px; display: flex; align-items: center; gap: 16px;">
-                    <div style="width: 48px; height: 48px; border-radius: 10px; background: rgba(0, 240, 255, 0.12); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 1.4rem;">
-                        <i class="fa-solid fa-shield-check"></i>
-                    </div>
-                    <div>
-                        <h4 style="font-size: 0.98rem; font-weight: 700;">100% Chính Hãng</h4>
-                        <p style="font-size: 0.82rem; color: var(--text-muted);">Cam kết sản phẩm phân phối chuẩn hãng</p>
-                    </div>
+            <div
+                style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 20px; display: flex; align-items: center; gap: 16px;">
+                <div
+                    style="width: 48px; height: 48px; border-radius: 10px; background: rgba(157, 78, 221, 0.15); color: var(--secondary); display: flex; align-items: center; justify-content: center; font-size: 1.4rem;">
+                    <i class="fa-solid fa-truck-fast"></i>
                 </div>
-
-                <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 20px; display: flex; align-items: center; gap: 16px;">
-                    <div style="width: 48px; height: 48px; border-radius: 10px; background: rgba(157, 78, 221, 0.15); color: var(--secondary); display: flex; align-items: center; justify-content: center; font-size: 1.4rem;">
-                        <i class="fa-solid fa-truck-fast"></i>
-                    </div>
-                    <div>
-                        <h4 style="font-size: 0.98rem; font-weight: 700;">Giao Hàng Siêu Tốc</h4>
-                        <p style="font-size: 0.82rem; color: var(--text-muted);">Hỏa tốc nội thành trong 2 giờ</p>
-                    </div>
-                </div>
-
-                <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 20px; display: flex; align-items: center; gap: 16px;">
-                    <div style="width: 48px; height: 48px; border-radius: 10px; background: rgba(16, 185, 129, 0.15); color: var(--success); display: flex; align-items: center; justify-content: center; font-size: 1.4rem;">
-                        <i class="fa-solid fa-arrows-rotate"></i>
-                    </div>
-                    <div>
-                        <h4 style="font-size: 0.98rem; font-weight: 700;">Đổi Mới 1 - 1</h4>
-                        <p style="font-size: 0.82rem; color: var(--text-muted);">Bảo hành lỗi 1 đổi 1 trong 30 ngày</p>
-                    </div>
-                </div>
-
-                <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 20px; display: flex; align-items: center; gap: 16px;">
-                    <div style="width: 48px; height: 48px; border-radius: 10px; background: rgba(245, 158, 11, 0.15); color: var(--warning); display: flex; align-items: center; justify-content: center; font-size: 1.4rem;">
-                        <i class="fa-solid fa-headset"></i>
-                    </div>
-                    <div>
-                        <h4 style="font-size: 0.98rem; font-weight: 700;">Hỗ Trợ 24/7</h4>
-                        <p style="font-size: 0.82rem; color: var(--text-muted);">Tư vấn build setup game thủ tận tình</p>
-                    </div>
+                <div>
+                    <h4 style="font-size: 0.98rem; font-weight: 700;">Giao Hàng Siêu Tốc</h4>
+                    <p style="font-size: 0.82rem; color: var(--text-muted);">Hỏa tốc nội thành trong 2 giờ</p>
                 </div>
             </div>
 
-            <!-- ================= SẢN PHẨM NỔI BẬT ĐỘNG TỪ CSDL ================= -->
-            <div class="page-header">
-                <h2 class="page-title">Sản Phẩm Mới Nhất &amp; Nổi Bật</h2>
-                <h:link outcome="/products.xhtml" styleClass="btn btn-sm btn-outline">
-                    Xem Tất Cả Gear <i class="fa-solid fa-arrow-right"></i>
-                </h:link>
+            <div
+                style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 20px; display: flex; align-items: center; gap: 16px;">
+                <div
+                    style="width: 48px; height: 48px; border-radius: 10px; background: rgba(16, 185, 129, 0.15); color: var(--success); display: flex; align-items: center; justify-content: center; font-size: 1.4rem;">
+                    <i class="fa-solid fa-arrows-rotate"></i>
+                </div>
+                <div>
+                    <h4 style="font-size: 0.98rem; font-weight: 700;">Đổi Mới 1 - 1</h4>
+                    <p style="font-size: 0.82rem; color: var(--text-muted);">Bảo hành lỗi 1 đổi 1 trong 30 ngày</p>
+                </div>
             </div>
 
-            <h:form id="homeForm">
-                <div class="product-grid">
-                    <ui:repeat value="#{productMB.featuredProducts}" var="p">
-                        <div class="product-card">
-                            <div class="product-img-wrapper">
-                                <span class="product-badge">#{p.brand}</span>
-                                <img src="#{productMB.getImageUrl(p.image)}" alt="#{p.productName}" class="product-img" />
+            <div
+                style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 20px; display: flex; align-items: center; gap: 16px;">
+                <div
+                    style="width: 48px; height: 48px; border-radius: 10px; background: rgba(245, 158, 11, 0.15); color: var(--warning); display: flex; align-items: center; justify-content: center; font-size: 1.4rem;">
+                    <i class="fa-solid fa-headset"></i>
+                </div>
+                <div>
+                    <h4 style="font-size: 0.98rem; font-weight: 700;">Hỗ Trợ 24/7</h4>
+                    <p style="font-size: 0.82rem; color: var(--text-muted);">Tư vấn build setup game thủ tận tình</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= SẢN PHẨM NỔI BẬT ĐỘNG TỪ CSDL ================= -->
+        <div class="page-header">
+            <h2 class="page-title">Sản Phẩm Mới Nhất &amp; Nổi Bật</h2>
+            <h:link outcome="/products.xhtml" styleClass="btn btn-sm btn-outline">
+                Xem Tất Cả Gear <i class="fa-solid fa-arrow-right"></i>
+            </h:link>
+        </div>
+
+        <h:form id="homeForm">
+            <div class="product-grid">
+                <ui:repeat value="#{productMB.featuredProducts}" var="p">
+                    <div class="product-card">
+                        <div class="product-img-wrapper">
+                            <span class="product-badge">#{p.brand}</span>
+                            <img src="#{productMB.getImageUrl(p.image)}" alt="#{p.productName}" class="product-img" />
+                        </div>
+                        <div class="product-info">
+                            <span class="product-brand">#{p.categoryID != null ? p.categoryID.categoryName : 'Phụ
+                                Kiện'}</span>
+                            <h3 class="product-name">
+                                <h:commandLink action="#{productMB.viewDetail(p.productID)}" style="color: inherit;">
+                                    #{p.productName}
+                                </h:commandLink>
+                            </h3>
+                            <div class="product-price">
+                                <h:outputText value="#{p.price}">
+                                    <f:convertNumber pattern="#,### ₫" />
+                                </h:outputText>
                             </div>
-                            <div class="product-info">
-                                <span class="product-brand">#{p.categoryID != null ? p.categoryID.categoryName : 'Phụ Kiện'}</span>
-                                <h3 class="product-name">
-                                    <h:commandLink action="#{productMB.viewDetail(p.productID)}" style="color: inherit;">
-                                        #{p.productName}
+                            <div class="product-stock #{p.quantity > 0 ? 'in' : 'out'}">
+                                <i class="fa-solid #{p.quantity > 0 ? 'fa-circle-check' : 'fa-circle-xmark'}"></i>
+                                #{p.quantity > 0 ? 'Còn hàng (' : 'Hết hàng'}#{p.quantity > 0 ? p.quantity :
+                                ''}#{p.quantity > 0 ? ' cái )' : ''}
+                            </div>
+                            <div class="product-actions">
+                                <h:commandLink action="#{productMB.viewDetail(p.productID)}"
+                                    styleClass="btn btn-sm btn-outline" style="flex:1;">
+                                    <i class="fa-regular fa-eye"></i> Chi Tiết
+                                </h:commandLink>
+                                <ui:fragment rendered="#{p.quantity > 0}">
+                                    <h:commandLink action="#{cartMB.addToCart(p, 1)}"
+                                        styleClass="btn btn-sm btn-primary">
+                                        <i class="fa-solid fa-cart-plus"></i>
                                     </h:commandLink>
-                                </h3>
-                                <div class="product-price">
-                                    <h:outputText value="#{p.price}">
-                                        <f:convertNumber pattern="#,### ₫" />
-                                    </h:outputText>
-                                </div>
-                                <div class="product-stock #{p.quantity > 0 ? 'in' : 'out'}">
-                                    <i class="fa-solid #{p.quantity > 0 ? 'fa-circle-check' : 'fa-circle-xmark'}"></i>
-                                    #{p.quantity > 0 ? 'Còn hàng (' : 'Hết hàng'}#{p.quantity > 0 ? p.quantity : ''}#{p.quantity > 0 ? ' cái)' : ''}
-                                </div>
-                                <div class="product-actions">
-                                    <h:commandLink action="#{productMB.viewDetail(p.productID)}" styleClass="btn btn-sm btn-outline" style="flex:1;">
-                                        <i class="fa-regular fa-eye"></i> Chi Tiết
-                                    </h:commandLink>
-                                    <ui:fragment rendered="#{p.quantity > 0}">
-                                        <h:commandLink action="#{cartMB.addToCart(p, 1)}" styleClass="btn btn-sm btn-primary">
-                                            <i class="fa-solid fa-cart-plus"></i>
-                                        </h:commandLink>
-                                    </ui:fragment>
-                                </div>
+                                </ui:fragment>
                             </div>
                         </div>
-                    </ui:repeat>
-                </div>
-            </h:form>
-        </ui:define>
-    </ui:composition>
+                    </div>
+                </ui:repeat>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>
+
 </html>
