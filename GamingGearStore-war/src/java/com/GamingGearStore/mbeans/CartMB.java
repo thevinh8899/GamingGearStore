@@ -55,8 +55,31 @@ public class CartMB implements Serializable {
     }
 
     // ================= CART OPERATIONS =================
+    public String addToCart(Products product) {
+        return addToCart(product, 1);
+    }
+
+    public String addToCart(Products product, Long qty) {
+        return addToCart(product, qty != null ? qty.intValue() : 1);
+    }
+
+    public String addToCart(Products product, long qty) {
+        return addToCart(product, (int) qty);
+    }
+
+    public String addToCart(Products product, Integer qty) {
+        return addToCart(product, qty != null ? qty.intValue() : 1);
+    }
+
     public String addToCart(Products product, int qty) {
         if (product == null || qty <= 0) return null;
+
+        // Kiểm tra xem đã đăng nhập chưa
+        Users loggedUser = (Users) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("loggedUser");
+        if (loggedUser == null) {
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("loginNotice", "Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng và đặt hàng!");
+            return "/login.xhtml?faces-redirect=true";
+        }
 
         for (CartItem item : items) {
             if (item.getProduct().getProductID().equals(product.getProductID())) {
@@ -69,6 +92,12 @@ public class CartMB implements Serializable {
         items.add(new CartItem(product, qty));
         updateSessionCartCount();
         return "/cart.xhtml?faces-redirect=true";
+    }
+
+    public void updateQuantity(Object productId, Object qty) {
+        int pId = parseNumber(productId);
+        int q = parseNumber(qty);
+        updateQuantity(pId, q);
     }
 
     public void updateQuantity(int productId, int qty) {
@@ -85,9 +114,26 @@ public class CartMB implements Serializable {
         updateSessionCartCount();
     }
 
+    public void removeItem(Object productId) {
+        removeItem(parseNumber(productId));
+    }
+
     public void removeItem(int productId) {
         items.removeIf(item -> item.getProduct().getProductID().equals(productId));
         updateSessionCartCount();
+    }
+
+    private int parseNumber(Object obj) {
+        if (obj instanceof Number) {
+            return ((Number) obj).intValue();
+        }
+        if (obj != null) {
+            try {
+                return Integer.parseInt(obj.toString());
+            } catch (Exception ignored) {
+            }
+        }
+        return 0;
     }
 
     public void clearCart() {
@@ -121,14 +167,16 @@ public class CartMB implements Serializable {
             return "/cart.xhtml?faces-redirect=true";
         }
 
-        // Tự động điền thông tin nếu đã đăng nhập
         Users loggedUser = (Users) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("loggedUser");
-        if (loggedUser != null) {
-            this.customerName = loggedUser.getFullName();
-            this.phone = loggedUser.getPhone();
-            this.email = loggedUser.getEmail();
-            this.shippingAddress = loggedUser.getAddress();
+        if (loggedUser == null) {
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("loginNotice", "Vui lòng đăng nhập để tiến hành thanh toán đơn hàng!");
+            return "/login.xhtml?faces-redirect=true";
         }
+
+        this.customerName = loggedUser.getFullName();
+        this.phone = loggedUser.getPhone();
+        this.email = loggedUser.getEmail();
+        this.shippingAddress = loggedUser.getAddress();
 
         checkoutError = null;
         return "/checkout.xhtml?faces-redirect=true";

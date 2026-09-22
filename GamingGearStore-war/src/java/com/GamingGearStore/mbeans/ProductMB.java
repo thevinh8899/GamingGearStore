@@ -91,6 +91,19 @@ public class ProductMB implements Serializable {
         return "/product-detail.xhtml?faces-redirect=true";
     }
 
+    public String viewDetail(Object productId) {
+        if (productId instanceof Number) {
+            return viewDetail(((Number) productId).intValue());
+        }
+        if (productId != null) {
+            try {
+                return viewDetail(Integer.parseInt(productId.toString()));
+            } catch (Exception ignored) {
+            }
+        }
+        return null;
+    }
+
     public List<Feedbacks> getCurrentProductFeedbacks() {
         if (currentProduct != null) {
             return feedbacksFacade.findByProductId(currentProduct.getProductID());
@@ -130,6 +143,22 @@ public class ProductMB implements Serializable {
 
     public void filterByCategory(Integer catId) {
         this.selectedCategoryId = catId;
+        this.searchKeyword = null;
+        this.selectedBrand = null;
+    }
+
+    public void filterByCategory(Object catId) {
+        if (catId instanceof Number) {
+            this.selectedCategoryId = ((Number) catId).intValue();
+        } else if (catId != null) {
+            try {
+                this.selectedCategoryId = Integer.parseInt(catId.toString());
+            } catch (Exception ignored) {
+                this.selectedCategoryId = null;
+            }
+        } else {
+            this.selectedCategoryId = null;
+        }
         this.searchKeyword = null;
         this.selectedBrand = null;
     }

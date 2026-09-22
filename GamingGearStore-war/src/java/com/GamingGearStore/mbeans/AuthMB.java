@@ -50,6 +50,7 @@ public class AuthMB implements Serializable {
         if (user != null) {
             currentUser = user;
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("loggedUser", currentUser);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("loginNotice");
 
             // Phân quyền chuyển hướng
             if ("admin".equalsIgnoreCase(user.getRole())) {
